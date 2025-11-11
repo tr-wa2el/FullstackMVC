@@ -1,0 +1,155 @@
+﻿@model FullstackMVC.Models.Department
+
+@{
+    ViewData["Title"] = "Edit Department";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow">
+      <div class="card-header bg-warning text-dark">
+ <h3 class="mb-0">
+     <i class="bi bi-pencil-square"></i> Edit Department
+          </h3>
+          </div>
+       <div class="card-body">
+        @if (TempData["ErrorMessage"] != null)
+        {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+         <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+           }
+
+       <form asp-action="EditDepartment" method="post">
+          <input type="hidden" asp-for="Id" />
+     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- Department ID (Read-only) -->
+    <div class="alert alert-info mb-4">
+          <strong><i class="bi bi-info-circle"></i> Department ID:</strong> #@Model.Id (Cannot be changed)
+     </div>
+
+      <div class="row">
+          <!-- Department Name -->
+         <div class="col-md-6 mb-3">
+                <label asp-for="Name" class="form-label">
+    <i class="bi bi-building"></i> Department Name <span class="text-danger">*</span>
+      </label>
+   <input asp-for="Name" class="form-control" placeholder="Enter department name" required />
+   <span asp-validation-for="Name" class="text-danger"></span>
+          </div>
+
+      <!-- Manager Name -->
+        <div class="col-md-6 mb-3">
+            <label asp-for="ManagerName" class="form-label">
+ <i class="bi bi-person-badge"></i> Manager Name
+          </label>
+                <input asp-for="ManagerName" class="form-control" placeholder="Enter manager name" />
+        <span asp-validation-for="ManagerName" class="text-danger"></span>
+        </div>
+             </div>
+
+   <!-- Description -->
+  <div class="mb-3">
+   <label asp-for="Description" class="form-label">
+          <i class="bi bi-journal-text"></i> Description
+        </label>
+        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter department description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+      </div>
+
+              <div class="row">
+        <!-- Location -->
+       <div class="col-md-6 mb-3">
+        <label asp-for="Location" class="form-label">
+           <i class="bi bi-geo-alt"></i> Location
+      </label>
+                 <select asp-for="Location" class="form-select">
+   <option value="">-- Select Location --</option>
+   <option value="Smart">Smart Village</option>
+          <option value="Fayoum">Fayoum</option>
+     <option value="Cairo">Cairo</option>
+         <option value="Giza">Giza</option>
+      <option value="Alexandria">Alexandria</option>
+           <option value="Mansoura">Mansoura</option>
+<option value="Aswan">Aswan</option>
+         </select>
+   <span asp-validation-for="Location" class="text-danger"></span>
+             </div>
+
+        <!-- PC Numbers -->
+        <div class="col-md-6 mb-3">
+              <label asp-for="PcNumbers" class="form-label">
+          <i class="bi bi-pc-display"></i> Number of PCs
+    </label>
+     <input asp-for="PcNumbers" class="form-control" type="number" min="0" max="1000" placeholder="Enter number of PCs" />
+  <span asp-validation-for="PcNumbers" class="text-danger"></span>
+        </div>
+      </div>
+
+<!-- Current Statistics -->
+      <div class="card bg-light border-info mt-3 mb-3">
+           <div class="card-header bg-info text-white">
+                  <h6 class="mb-0"><i class="bi bi-graph-up"></i> Current Statistics</h6>
+      </div>
+         <div class="card-body">
+    <div class="row text-center">
+       <div class="col-md-3">
+             <div class="p-2">
+           <h4 class="text-primary mb-0">@(Model.Students?.Count ?? 0)</h4>
+     <small class="text-muted">Students</small>
+  </div>
+           </div>
+          <div class="col-md-3">
+         <div class="p-2">
+   <h4 class="text-success mb-0">@(Model.Instructors?.Count ?? 0)</h4>
+           <small class="text-muted">Instructors</small>
+     </div>
+                  </div>
+  <div class="col-md-3">
+    <div class="p-2">
+        <h4 class="text-info mb-0">@(Model.Courses?.Count ?? 0)</h4>
+      <small class="text-muted">Courses</small>
+            </div>
+ </div>
+       <div class="col-md-3">
+   <div class="p-2">
+              <h4 class="text-warning mb-0">@(Model.Employees?.Count ?? 0)</h4>
+          <small class="text-muted">Employees</small>
+         </div>
+        </div>
+</div>
+         </div>
+       </div>
+
+          <!-- Department Info Alert -->
+        <div class="alert alert-warning">
+      <strong><i class="bi bi-exclamation-triangle"></i> Important:</strong>
+         <ul class="mb-0 mt-2">
+       <li>Department name should be descriptive and unique</li>
+   <li>Location affects certain business rules and access permissions</li>
+ <li>Changing department details may affect @((Model.Students?.Count ?? 0) + (Model.Instructors?.Count ?? 0)) users</li>
+                 </ul>
+    </div>
+
+       <!-- Action Buttons -->
+       <div class="d-flex justify-content-between mt-4">
+  <a asp-action="Departments" class="btn btn-secondary btn-lg">
+           <i class="bi bi-arrow-left"></i> Cancel
+        </a>
+      <button type="submit" class="btn btn-warning btn-lg">
+      <i class="bi bi-check-circle"></i> Update Department
+           </button>
+   </div>
+        </form>
+     </div>
+            </div>
+    </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

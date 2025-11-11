@@ -150,11 +150,21 @@
         // GET: /Admin/CreateStudent
         public async Task<IActionResult> CreateStudent()
         {
-            ViewBag.Departments = new SelectList(
-                await _context.Departments.ToListAsync(),
-                "Id",
-                "Name"
-            );
+            try
+            {
+                ViewBag.Departments = new SelectList(
+                    await _context.Departments.ToListAsync(),
+                    "Id",
+                    "Name"
+                );
+            }
+            catch (Exception ex) when (ex.Message.Contains("Invalid column name"))
+            {
+                // Handle the case where database hasn't been updated yet
+                ViewBag.Departments = new SelectList(new List<object>(), "Id", "Name");
+                TempData["ErrorMessage"] = "Database schema needs to be updated. Please contact administrator.";
+            }
+
             return View();
         }
 
@@ -316,10 +326,34 @@
         {
             if (ModelState.IsValid)
             {
-                _context.Update(model);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Instructor updated successfully!";
-                return RedirectToAction("Instructors");
+                try
+                {
+                    // Check for unique email (excluding current instructor)
+                    var existingInstructor = await _context.Instructors
+                        .FirstOrDefaultAsync(i => i.Email == model.Email && i.Id != model.Id);
+
+                    if (existingInstructor != null)
+                    {
+                        ModelState.AddModelError("Email", "This email address is already in use.");
+                        ViewBag.Departments = new SelectList(
+                            await _context.Departments.ToListAsync(),
+                            "Id",
+                            "Name",
+                            model.DeptId
+                        );
+                        return View(model);
+                    }
+
+                    _context.Update(model);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Instructor updated successfully!";
+                    return RedirectToAction("Instructors");
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = $"Error updating instructor: {ex.Message}";
+                    return RedirectToAction("EditInstructor", new { id = model.Id });
+                }
             }
 
             ViewBag.Departments = new SelectList(
@@ -377,16 +411,26 @@
         // GET: /Admin/CreateCourse
         public async Task<IActionResult> CreateCourse()
         {
-            ViewBag.Departments = new SelectList(
-                await _context.Departments.ToListAsync(),
-                "Id",
-                "Name"
-            );
-            ViewBag.Instructors = new SelectList(
-                await _context.Instructors.ToListAsync(),
-                "Id",
-                "Name"
-            );
+            try
+            {
+                ViewBag.Departments = new SelectList(
+                    await _context.Departments.ToListAsync(),
+                    "Id",
+                    "Name"
+                );
+                ViewBag.Instructors = new SelectList(
+                    await _context.Instructors.ToListAsync(),
+                    "Id",
+                    "Name"
+                );
+            }
+            catch (Exception ex) when (ex.Message.Contains("Invalid column name"))
+            {
+                // Handle the case where database hasn't been updated yet
+                ViewBag.Departments = new SelectList(new List<object>(), "Id", "Name");
+                ViewBag.Instructors = new SelectList(new List<object>(), "Id", "Name");
+                TempData["ErrorMessage"] = "Database schema needs to be updated. Please run the SQL fix script.";
+            }
             return View();
         }
 
@@ -550,10 +594,18 @@
         {
             if (ModelState.IsValid)
             {
-                _context.Update(model);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Department updated successfully!";
-                return RedirectToAction("Departments");
+                try
+                {
+                    _context.Update(model);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Department updated successfully!";
+                    return RedirectToAction("Departments");
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = $"Error updating department: {ex.Message}";
+                    return RedirectToAction("EditDepartment", new { id = model.Id });
+                }
             }
 
             return View(model);

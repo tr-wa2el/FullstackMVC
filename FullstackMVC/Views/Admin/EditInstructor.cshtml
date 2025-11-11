@@ -1,0 +1,164 @@
+﻿@model FullstackMVC.Models.Instructor
+
+@{
+    ViewData["Title"] = "Edit Instructor";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+       <h3 class="mb-0">
+            <i class="bi bi-pencil-square"></i> Edit Instructor
+     </h3>
+    </div>
+                <div class="card-body">
+           @if (TempData["ErrorMessage"] != null)
+              {
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+       <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+       }
+
+        <form asp-action="EditInstructor" method="post">
+    <input type="hidden" asp-for="Id" />
+   <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+          <!-- Instructor ID (Read-only) -->
+     <div class="row mb-3">
+         <div class="col-md-12">
+               <div class="alert alert-info">
+   <strong><i class="bi bi-info-circle"></i> Instructor ID:</strong> #@Model.Id (Cannot be changed)
+       </div>
+    </div>
+               </div>
+
+        <div class="row">
+                <!-- Name -->
+        <div class="col-md-6 mb-3">
+      <label asp-for="Name" class="form-label">
+         <i class="bi bi-person"></i> Full Name <span class="text-danger">*</span>
+     </label>
+                  <input asp-for="Name" class="form-control" placeholder="Enter full name" required />
+       <span asp-validation-for="Name" class="text-danger"></span>
+         </div>
+
+     <!-- Email -->
+            <div class="col-md-6 mb-3">
+           <label asp-for="Email" class="form-label">
+           <i class="bi bi-envelope"></i> Email Address <span class="text-danger">*</span>
+        </label>
+           <input asp-for="Email" type="email" class="form-control" placeholder="instructor@university.edu" required />
+          <span asp-validation-for="Email" class="text-danger"></span>
+    <small class="form-text text-muted">Must be unique</small>
+           </div>
+           </div>
+
+         <div class="row">
+          <!-- Age -->
+            <div class="col-md-4 mb-3">
+       <label asp-for="Age" class="form-label">
+    <i class="bi bi-calendar"></i> Age <span class="text-danger">*</span>
+             </label>
+            <input asp-for="Age" type="number" class="form-control" min="25" max="100" required />
+  <span asp-validation-for="Age" class="text-danger"></span>
+</div>
+
+           <!-- Degree -->
+                <div class="col-md-4 mb-3">
+         <label asp-for="Degree" class="form-label">
+   <i class="bi bi-mortarboard"></i> Degree
+       </label>
+            <select asp-for="Degree" class="form-select">
+       <option value="">-- Select Degree --</option>
+      <option value="BSc">Bachelor's (BSc)</option>
+            <option value="MSc">Master's (MSc)</option>
+      <option value="PhD">Doctorate (PhD)</option>
+        <option value="Professor">Professor</option>
+            </select>
+       <span asp-validation-for="Degree" class="text-danger"></span>
+     </div>
+
+        <!-- Salary -->
+  <div class="col-md-4 mb-3">
+           <label asp-for="Salary" class="form-label">
+       <i class="bi bi-cash"></i> Salary <span class="text-danger">*</span>
+              </label>
+          <input asp-for="Salary" type="number" step="0.01" class="form-control" required />
+      <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+        </div>
+
+      <div class="row">
+               <!-- Department -->
+                 <div class="col-md-6 mb-3">
+         <label asp-for="DeptId" class="form-label">
+              <i class="bi bi-building"></i> Department
+        </label>
+     <select asp-for="DeptId" class="form-select" asp-items="ViewBag.Departments">
+             <option value="">-- Select Department --</option>
+            </select>
+ <span asp-validation-for="DeptId" class="text-danger"></span>
+    </div>
+
+         <!-- Image URL -->
+ <div class="col-md-6 mb-3">
+    <label asp-for="Image" class="form-label">
+   <i class="bi bi-image"></i> Profile Image URL
+           </label>
+             <input asp-for="Image" type="url" class="form-control" placeholder="https://example.com/image.jpg" />
+  <span asp-validation-for="Image" class="text-danger"></span>
+             </div>
+    </div>
+
+    <!-- Address -->
+            <div class="mb-3">
+          <label asp-for="Address" class="form-label">
+          <i class="bi bi-geo-alt"></i> Address
+                  </label>
+         <textarea asp-for="Address" class="form-control" rows="2" placeholder="Enter address"></textarea>
+   <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+       <!-- Current Statistics -->
+        @if (Model.Courses != null && Model.Courses.Any())
+      {
+            <div class="alert alert-info">
+        <h6><i class="bi bi-info-circle"></i> Current Statistics:</h6>
+      <ul class="mb-0">
+   <li><strong>Teaching:</strong> @Model.Courses.Count() course(s)</li>
+         <li><strong>Department:</strong> @(Model.Department?.Name ?? "Not Assigned")</li>
+    </ul>
+     </div>
+      }
+
+  <!-- Salary Rules Alert -->
+               <div class="alert alert-warning">
+    <strong><i class="bi bi-exclamation-triangle"></i> Salary Rules:</strong>
+<ul class="mb-0">
+  <li>Salary must be appropriate for the selected department</li>
+          <li>Minimum salary varies by department</li>
+          </ul>
+            </div>
+
+               <!-- Action Buttons -->
+  <div class="d-flex justify-content-between mt-4">
+          <a asp-action="Instructors" class="btn btn-secondary btn-lg">
+           <i class="bi bi-arrow-left"></i> Cancel
+       </a>
+          <button type="submit" class="btn btn-warning btn-lg">
+    <i class="bi bi-check-circle"></i> Update Instructor
+          </button>
+           </div>
+       </form>
+      </div>
+   </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -65,7 +65,7 @@
             DeptWithEctraInfoVM deptVM = new DeptWithEctraInfoVM
             {
                 Name = dept.Name,
-                Manger = dept.MangerName,
+                Manager = dept.ManagerName,
                 Message = $"Hello from Department {dept.Name}",
                 Count = dept.Employees?.Count ?? 0,
                 Color = (dept.Employees?.Count ?? 0) > 1 ? "red" : "green",

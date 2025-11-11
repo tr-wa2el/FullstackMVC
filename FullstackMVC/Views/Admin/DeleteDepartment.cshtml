@@ -1,0 +1,265 @@
+﻿@model FullstackMVC.Models.Department
+
+@{
+    ViewData["Title"] = "Delete Department";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+<div class="col-lg-10">
+        <div class="card shadow border-danger">
+    <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">
+        <i class="bi bi-trash"></i> Delete Department
+           </h3>
+    </div>
+    <div class="card-body">
+    @if (TempData["ErrorMessage"] != null)
+{
+ <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+                  }
+
+        <div class="alert alert-warning">
+<i class="bi bi-exclamation-triangle-fill"></i>
+    <strong>Warning!</strong> Are you sure you want to delete this department? This action cannot be undone.
+    </div>
+
+       <!-- Department Information -->
+       <div class="card mb-4 border-primary">
+  <div class="card-header bg-primary text-white">
+  <h5 class="mb-0"><i class="bi bi-building"></i> Department Information</h5>
+ </div>
+        <div class="card-body">
+         <div class="row">
+    <div class="col-md-6">
+   <table class="table table-borderless">
+       <tr>
+            <th width="40%">Department ID:</th>
+             <td><span class="badge bg-primary fs-6">#@Model.Id</span></td>
+  </tr>
+        <tr>
+        <th>Department Name:</th>
+<td><strong class="text-primary">@Model.Name</strong></td>
+          </tr>
+         <tr>
+          <th>Manager:</th>
+  <td>@(Model.ManagerName ?? "N/A")</td>
+            </tr>
+     <tr>
+               <th>Description:</th>
+        <td>@(Model.Description ?? "N/A")</td>
+      </tr>
+   </table>
+     </div>
+    <div class="col-md-6">
+           <table class="table table-borderless">
+                 <tr>
+   <th width="40%">Location:</th>
+              <td>
+     @if (!string.IsNullOrEmpty(Model.Location))
+        {
+<span class="badge bg-info fs-6">@Model.Location</span>
+        }
+         else
+      {
+  <span class="text-muted">N/A</span>
+       }
+          </td>
+   </tr>
+    <tr>
+ <th>PC Numbers:</th>
+            <td><span class="badge bg-warning text-dark">@(Model.PcNumbers ?? 0) PCs</span></td>
+          </tr>
+      </table>
+        </div>
+          </div>
+  </div>
+     </div>
+
+          <!-- Related Records Summary -->
+           <div class="row g-3 mb-4">
+    <div class="col-md-3">
+   <div class="card text-center @(Model.Students?.Any() == true ? "border-danger" : "border-success")">
+       <div class="card-body">
+     <h2 class="@(Model.Students?.Any() == true ? "text-danger" : "text-success")">
+ @(Model.Students?.Count ?? 0)
+    </h2>
+       <p class="mb-0"><i class="bi bi-people"></i> Students</p>
+            </div>
+  </div>
+         </div>
+       <div class="col-md-3">
+    <div class="card text-center @(Model.Instructors?.Any() == true ? "border-danger" : "border-success")">
+          <div class="card-body">
+         <h2 class="@(Model.Instructors?.Any() == true ? "text-danger" : "text-success")">
+           @(Model.Instructors?.Count ?? 0)
+   </h2>
+               <p class="mb-0"><i class="bi bi-person-badge"></i> Instructors</p>
+         </div>
+    </div>
+       </div>
+   <div class="col-md-3">
+        <div class="card text-center @(Model.Courses?.Any() == true ? "border-danger" : "border-success")">
+          <div class="card-body">
+       <h2 class="@(Model.Courses?.Any() == true ? "text-danger" : "text-success")">
+           @(Model.Courses?.Count ?? 0)
+              </h2>
+        <p class="mb-0"><i class="bi bi-book"></i> Courses</p>
+             </div>
+           </div>
+   </div>
+           <div class="col-md-3">
+    <div class="card text-center @(Model.Employees?.Any() == true ? "border-danger" : "border-success")">
+    <div class="card-body">
+           <h2 class="@(Model.Employees?.Any() == true ? "text-danger" : "text-success")">
+           @(Model.Employees?.Count ?? 0)
+          </h2>
+     <p class="mb-0"><i class="bi bi-person"></i> Employees</p>
+         </div>
+      </div>
+       </div>
+              </div>
+
+        <!-- Related Records Details -->
+  @{
+        var hasRelatedRecords = Model.Students?.Any() == true || 
+ Model.Instructors?.Any() == true || 
+           Model.Courses?.Any() == true || 
+             Model.Employees?.Any() == true;
+         }
+
+        @if (hasRelatedRecords)
+    {
+       <div class="alert alert-danger">
+          <h6><i class="bi bi-exclamation-circle"></i> Cannot Delete - Related Records Found:</h6>
+       <ul class="mb-0">
+        @if (Model.Students?.Any() == true)
+      {
+           <li><strong>Students:</strong> @Model.Students.Count() student(s) enrolled</li>
+          }
+        @if (Model.Instructors?.Any() == true)
+              {
+            <li><strong>Instructors:</strong> @Model.Instructors.Count() instructor(s) assigned</li>
+    }
+                   @if (Model.Courses?.Any() == true)
+     {
+            <li><strong>Courses:</strong> @Model.Courses.Count() course(s) registered</li>
+     }
+           @if (Model.Employees?.Any() == true)
+         {
+      <li><strong>Employees:</strong> @Model.Employees.Count() employee(s) working</li>
+            }
+    </ul>
+     <p class="mb-0 mt-3 text-danger">
+ <strong><i class="bi bi-exclamation-triangle"></i> Important:</strong> 
+You must reassign or remove all related records before deleting this department.
+                     </p>
+             </div>
+
+         <!-- Show related records if any -->
+         @if (Model.Students?.Any() == true)
+            {
+          <div class="card border-warning mt-3">
+       <div class="card-header bg-warning text-dark">
+    <h6 class="mb-0"><i class="bi bi-people"></i> Enrolled Students (First 5)</h6>
+           </div>
+    <div class="card-body">
+       <div class="row">
+         @foreach (var student in Model.Students.Take(5))
+             {
+ <div class="col-md-6 mb-2">
+           <div class="d-flex align-items-center">
+   <i class="bi bi-person-circle text-primary me-2"></i>
+             <span>@student.Name (SSN: @student.SSN)</span>
+      </div>
+   </div>
+         }
+      </div>
+         @if (Model.Students.Count() > 5)
+          {
+        <p class="text-muted mb-0 mt-2">...and @(Model.Students.Count() - 5) more</p>
+  }
+          </div>
+             </div>
+  }
+
+      @if (Model.Courses?.Any() == true)
+            {
+            <div class="card border-info mt-3">
+       <div class="card-header bg-info text-white">
+      <h6 class="mb-0"><i class="bi bi-book"></i> Registered Courses (First 5)</h6>
+      </div>
+           <div class="card-body">
+        <div class="row">
+               @foreach (var course in Model.Courses.Take(5))
+      {
+          <div class="col-md-6 mb-2">
+     <div class="d-flex align-items-center">
+                <i class="bi bi-journal-code text-info me-2"></i>
+      <span>@course.Name (Code: @course.Num)</span>
+  </div>
+                    </div>
+    }
+                   </div>
+ @if (Model.Courses.Count() > 5)
+             {
+           <p class="text-muted mb-0 mt-2">...and @(Model.Courses.Count() - 5) more</p>
+          }
+              </div>
+      </div>
+             }
+ }
+     else
+         {
+    <div class="alert alert-success">
+  <i class="bi bi-check-circle"></i> This department has no related records and can be safely deleted.
+        </div>
+             }
+
+<!-- Delete Confirmation Form -->
+           <form asp-action="DeleteDepartmentConfirmed" method="post" class="mt-4">
+    <input type="hidden" name="id" value="@Model.Id" />
+   
+      @if (!hasRelatedRecords)
+             {
+ <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="confirmDelete" required />
+     <label class="form-check-label text-danger" for="confirmDelete">
+        <strong>I understand that this action cannot be undone</strong>
+          </label>
+             </div>
+                }
+
+ <div class="d-flex justify-content-between">
+               <a asp-action="Departments" class="btn btn-secondary btn-lg">
+  <i class="bi bi-arrow-left"></i> Cancel
+        </a>
+             @if (!hasRelatedRecords)
+           {
+       <button type="submit" class="btn btn-danger btn-lg">
+              <i class="bi bi-trash-fill"></i> Yes, Delete Department
+            </button>
+                }
+         else
+      {
+     <button type="button" class="btn btn-danger btn-lg" disabled>
+<i class="bi bi-x-circle"></i> Cannot Delete (Has Related Records)
+       </button>
+    }
+       </div>
+  </form>
+     </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card-body table th {
+    font-weight: 600;
+    color: #6c757d;
+}
+</style>

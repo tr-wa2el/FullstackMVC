@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>@ViewData["Title"] - FullstackMVC</title>
 
     <!-- Bootstrap CSS -->
@@ -14,6 +16,17 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FullstackMVC.styles.css" asp-append-version="true" />
+ 
+    <style>
+     /* Ensure proper font rendering for mixed content */
+        body, .card, .card-title, .card-text, p, h1, h2, h3, h4, h5, h6 {
+       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+ </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!-- Header Partial View -->

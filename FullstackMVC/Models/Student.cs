@@ -8,7 +8,7 @@
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required(ErrorMessage = "SSN is required")]
-        [MinLength(4, ErrorMessage = "SSN must be at least 4 digits")]
+        [Range(1000, 999999999, ErrorMessage = "SSN must be at least 4 digits")]
         [Display(Name = "SSN")]
         public int SSN { get; set; }
 

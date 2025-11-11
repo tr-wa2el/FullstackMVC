@@ -43,7 +43,7 @@
                     {
                         Id = 1,
                         Name = "Computer Science",
-                        MangerName = "Dr. Ahmed Ali",
+                        ManagerName = "Dr. Ahmed Ali",
                         Location = "Building A",
                         PcNumbers = 50,
                     },
@@ -51,7 +51,7 @@
                     {
                         Id = 2,
                         Name = "Engineering",
-                        MangerName = "Dr. Sara Hassan",
+                        ManagerName = "Dr. Sara Hassan",
                         Location = "Building B",
                         PcNumbers = 40,
                     },
@@ -59,7 +59,7 @@
                     {
                         Id = 3,
                         Name = "Business Administration",
-                        MangerName = "Dr. Mohamed Farid",
+                        ManagerName = "Dr. Mohamed Farid",
                         Location = "Building C",
                         PcNumbers = 30,
                     }

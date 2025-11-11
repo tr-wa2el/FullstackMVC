@@ -6,7 +6,7 @@
 
         public string Message { get; set; }
 
-        public string Manger { get; set; }
+        public string Manager { get; set; }
 
         public string Color { get; set; }
 

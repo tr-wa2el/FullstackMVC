@@ -1,0 +1,266 @@
+﻿@model FullstackMVC.Models.Student
+
+@{
+    ViewData["Title"] = "Edit Student";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+    <div class="card shadow-lg">
+      <div class="card-header bg-warning text-dark">
+          <h3 class="mb-0">
+       <i class="bi bi-pencil-square"></i> Edit Student: @Model.Name
+          </h3>
+       </div>
+       <div class="card-body p-4">
+      <form asp-action="EditStudent" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="SSN" />
+        
+      <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" role="alert">
+   <h6><i class="bi bi-exclamation-triangle"></i> Please fix the following errors:</h6>
+     </div>
+
+      <div class="row g-3">
+     <!-- SSN (Read-only) -->
+       <div class="col-md-6">
+          <label class="form-label fw-bold">
+      <i class="bi bi-person-badge"></i> Student SSN
+      </label>
+         <input value="@Model.SSN" class="form-control" readonly disabled />
+      <div class="form-text">
+        <i class="bi bi-lock"></i> SSN cannot be modified
+     </div>
+   </div>
+
+ <!-- Name -->
+      <div class="col-md-6">
+           <label asp-for="Name" class="form-label fw-bold">
+      <i class="bi bi-person"></i> Student Name
+          </label>
+     <input asp-for="Name" class="form-control" 
+          placeholder="Enter full name" maxlength="100" required />
+        <span asp-validation-for="Name" class="text-danger small"></span>
+      <div class="form-text">
+    <i class="bi bi-info-circle"></i> 2-100 characters, letters and spaces only
+       </div>
+      </div>
+
+          <!-- Age -->
+           <div class="col-md-6">
+      <label asp-for="Age" class="form-label fw-bold">
+           <i class="bi bi-calendar3"></i> Age
+   </label>
+           <input asp-for="Age" class="form-control" type="number" 
+      min="16" max="100" placeholder="Enter age" required />
+          <span asp-validation-for="Age" class="text-danger small"></span>
+            <div class="form-text">
+       <i class="bi bi-info-circle"></i> Must be between 16-100 years
+    </div>
+    </div>
+
+        <!-- Gender -->
+    <div class="col-md-6">
+   <label asp-for="Gender" class="form-label fw-bold">
+       <i class="bi bi-gender-ambiguous"></i> Gender
+         </label>
+          <select asp-for="Gender" class="form-select" required>
+          <option value="">-- Select Gender --</option>
+     <option value="Male">Male</option>
+  <option value="Female">Female</option>
+     </select>
+      <span asp-validation-for="Gender" class="text-danger small"></span>
+   <div class="form-text">
+  <i class="bi bi-info-circle"></i> Required field
+    </div>
+           </div>
+
+        <!-- Department -->
+  <div class="col-12">
+       <label asp-for="DeptId" class="form-label fw-bold">
+  <i class="bi bi-building"></i> Department
+         </label>
+             <select asp-for="DeptId" class="form-select" asp-items="ViewBag.Departments">
+         <option value="">-- Select Department (Optional) --</option>
+          </select>
+       <span asp-validation-for="DeptId" class="text-danger small"></span>
+   <div class="form-text">
+     <i class="bi bi-info-circle"></i> Student can be assigned to a department
+            </div>
+   </div>
+
+           <!-- Address -->
+  <div class="col-12">
+           <label asp-for="Address" class="form-label fw-bold">
+  <i class="bi bi-geo-alt"></i> Address
+             </label>
+          <textarea asp-for="Address" class="form-control" rows="2" 
+           placeholder="Enter student address (optional)" maxlength="200"></textarea>
+      <span asp-validation-for="Address" class="text-danger small"></span>
+       <div class="form-text">
+             <i class="bi bi-info-circle"></i> Maximum 200 characters (optional)
+                 </div>
+        </div>
+
+     <!-- Profile Image -->
+        <div class="col-12">
+    <label asp-for="Image" class="form-label fw-bold">
+  <i class="bi bi-image"></i> Profile Image URL
+            </label>
+       <input asp-for="Image" class="form-control" type="url" 
+     placeholder="https://example.com/profile-image.jpg" maxlength="500" />
+               <span asp-validation-for="Image" class="text-danger small"></span>
+            <div class="form-text">
+    <i class="bi bi-info-circle"></i> Enter a valid image URL (optional)
+              </div>
+   @if (!string.IsNullOrEmpty(Model.Image))
+         {
+           <div class="mt-2">
+     <img src="@Model.Image" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" 
+         alt="Current Profile" onerror="this.style.display='none';" />
+      </div>
+             }
+      </div>
+               </div>
+
+         <!-- Action Buttons -->
+<div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+              <a asp-action="Students" class="btn btn-outline-secondary btn-lg">
+ <i class="bi bi-arrow-left"></i> Back to Students
+    </a>
+  <div>
+               <button type="reset" class="btn btn-outline-warning me-2">
+     <i class="bi bi-arrow-clockwise"></i> Reset Changes
+       </button>
+             <button type="submit" class="btn btn-warning btn-lg">
+      <i class="bi bi-save"></i> Update Student
+         </button>
+         </div>
+        </div>
+      </form>
+                </div>
+         </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+  // Bootstrap form validation
+   (function() {
+ 'use strict';
+            window.addEventListener('load', function() {
+   var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+       form.addEventListener('submit', function(event) {
+       if (form.checkValidity() === false) {
+               event.preventDefault();
+        event.stopPropagation();
+           }
+            form.classList.add('was-validated');
+      }, false);
+    });
+            }, false);
+        })();
+
+    // Show validation summary if there are model errors
+        @if (!ViewData.ModelState.IsValid)
+        {
+         <text>
+document.addEventListener('DOMContentLoaded', function() {
+           document.querySelector('.alert-danger').classList.remove('d-none');
+   });
+            </text>
+        }
+
+    // Real-time image preview
+   document.getElementById('Image').addEventListener('input', function(e) {
+            const imageUrl = e.target.value;
+          const existingPreview = document.getElementById('image-preview');
+            
+            if (existingPreview) {
+     existingPreview.remove();
+            }
+         
+      if (imageUrl && imageUrl.match(/\.(jpeg|jpg|gif|png)$/)) {
+ const previewDiv = document.createElement('div');
+          previewDiv.id = 'image-preview';
+       previewDiv.className = 'mt-2';
+          previewDiv.innerHTML = '<img src="' + imageUrl + '" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" alt="Preview" onerror="this.style.display=\'none\';">';
+          e.target.parentNode.appendChild(previewDiv);
+        }
+      });
+    </script>
+
+    <style>
+        .card {
+         border: none;
+      border-radius: 15px;
+        }
+        
+ .card-header {
+   border-radius: 15px 15px 0 0 !important;
+   padding: 1.5rem;
+  }
+
+        .form-control, .form-select {
+    border-radius: 10px;
+            padding: 0.75rem;
+      border: 2px solid #e9ecef;
+   transition: all 0.3s ease;
+        }
+        
+    .form-control:focus, .form-select:focus {
+         border-color: #667eea;
+       box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            transform: translateY(-1px);
+        }
+        
+        .btn {
+            border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+ font-weight: 500;
+       transition: all 0.3s ease;
+        }
+        
+      .btn:hover {
+        transform: translateY(-2px);
+     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .form-label {
+            color: #495057;
+  margin-bottom: 0.5rem;
+        }
+        
+        .form-text {
+            color: #6c757d;
+    font-size: 0.875rem;
+   }
+        
+        .border-top {
+     border-color: #e9ecef !important;
+        }
+     
+        .was-validated .form-control:valid,
+.was-validated .form-select:valid {
+ border-color: #28a745;
+        }
+        
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #dc3545;
+ }
+
+        .form-control:disabled {
+            background-color: #f8f9fa;
+         border-color: #dee2e6;
+        color: #6c757d;
+        }
+ </style>
+}

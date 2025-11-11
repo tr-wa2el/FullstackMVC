@@ -1,0 +1,267 @@
+﻿@model FullstackMVC.Models.Course
+
+@{
+    ViewData["Title"] = "Delete Course";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+  <div class="col-md-10">
+<div class="card shadow border-danger">
+    <div class="card-header bg-danger text-white">
+  <h3 class="mb-0">
+       <i class="bi bi-trash"></i> Delete Course
+      </h3>
+   </div>
+    <div class="card-body">
+         @if (TempData["ErrorMessage"] != null)
+         {
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+      }
+
+ <div class="alert alert-warning">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+           <strong>Warning!</strong> Are you sure you want to delete this course? This action cannot be undone.
+      </div>
+
+               <!-- Course Information Card -->
+                  <div class="card mb-4 border-primary">
+   <div class="card-header bg-primary text-white">
+   <h5 class="mb-0"><i class="bi bi-book"></i> Course Information</h5>
+          </div>
+     <div class="card-body">
+  <div class="row">
+        <div class="col-md-6">
+     <table class="table table-borderless">
+        <tr>
+   <th width="40%">Course Number:</th>
+    <td><span class="badge bg-primary fs-6">#@Model.Num</span></td>
+              </tr>
+        <tr>
+       <th>Course Name:</th>
+               <td><strong class="text-primary">@Model.Name</strong></td>
+           </tr>
+   <tr>
+           <th>Topic:</th>
+      <td>
+      @if (!string.IsNullOrEmpty(Model.Topic))
+           {
+       <span class="badge bg-info">@Model.Topic</span>
+                }
+           else
+          {
+ <span class="text-muted">N/A</span>
+  }
+    </td>
+             </tr>
+        <tr>
+       <th>Description:</th>
+           <td>@(Model.Description ?? "N/A")</td>
+       </tr>
+         </table>
+          </div>
+               <div class="col-md-6">
+  <table class="table table-borderless">
+    <tr>
+      <th width="40%">Maximum Degree:</th>
+     <td><span class="badge bg-success fs-6">@Model.Degree</span></td>
+        </tr>
+      <tr>
+     <th>Minimum Degree:</th>
+                 <td><span class="badge bg-warning text-dark fs-6">@Model.MinDegree</span></td>
+     </tr>
+         <tr>
+       <th>Department:</th>
+    <td>
+         @if (Model.Department != null)
+           {
+ <span class="badge bg-primary">@Model.Department.Name</span>
+     }
+  else
+    {
+  <span class="text-muted">Not Assigned</span>
+              }
+             </td>
+      </tr>
+           <tr>
+  <th>Instructor:</th>
+         <td>
+    @if (Model.Instructor != null)
+  {
+          <span class="badge bg-info">@Model.Instructor.Name</span>
+}
+                 else
+             {
+               <span class="text-muted">Not Assigned</span>
+ }
+      </td>
+         </tr>
+   </table>
+    </div>
+           </div>
+     </div>
+  </div>
+
+<!-- Enrollment Statistics -->
+            <div class="row g-3 mb-4">
+      <div class="col-md-4">
+              <div class="card text-center @(Model.Grades?.Any() == true ? "border-danger" : "border-success")">
+  <div class="card-body">
+       <h2 class="@(Model.Grades?.Any() == true ? "text-danger" : "text-success")">
+         @(Model.Grades?.Count ?? 0)
+   </h2>
+          <p class="mb-0"><i class="bi bi-people"></i> Enrolled Students</p>
+      </div>
+</div>
+    </div>
+       <div class="col-md-4">
+      <div class="card text-center border-info">
+       <div class="card-body">
+       <h2 class="text-info">
+          @if (Model.Grades?.Any() == true)
+        {
+       @string.Format("{0:F1}", Model.Grades.Average(g => g.GradeValue ?? 0))
+                 }
+               else
+          {
+    <text>N/A</text>
+          }
+    </h2>
+      <p class="mb-0"><i class="bi bi-graph-up"></i> Average Grade</p>
+   </div>
+           </div>
+         </div>
+  <div class="col-md-4">
+     <div class="card text-center border-warning">
+    <div class="card-body">
+         <h2 class="text-warning">
+@if (Model.Grades?.Any() == true)
+     {
+  @Model.Grades.Count(g => g.GradeValue >= Model.MinDegree)
+       }
+                  else
+              {
+          <text>0</text>
+     }
+           </h2>
+               <p class="mb-0"><i class="bi bi-award"></i> Passed Students</p>
+            </div>
+        </div>
+    </div>
+      </div>
+
+        <!-- Enrolled Students Warning -->
+@if (Model.Grades != null && Model.Grades.Any())
+{
+          <div class="alert alert-danger">
+      <h6><i class="bi bi-exclamation-circle"></i> Warning - Enrolled Students:</h6>
+          <p>This course has <strong>@Model.Grades.Count() enrolled student(s)</strong>. Deleting this course will:</p>
+     <ul class="mb-0">
+     <li>Remove all grade records for these students</li>
+            <li>Remove this course from student transcripts</li>
+ <li>Affect student academic progress and statistics</li>
+  </ul>
+     </div>
+
+                   <!-- Student List (First 10) -->
+    <div class="card border-warning mt-3">
+     <div class="card-header bg-warning text-dark">
+<h6 class="mb-0"><i class="bi bi-people"></i> Enrolled Students (First 10)</h6>
+       </div>
+          <div class="card-body">
+       <div class="row">
+  @foreach (var grade in Model.Grades.Take(10))
+          {
+          <div class="col-md-6 mb-2">
+    <div class="d-flex justify-content-between align-items-center p-2 border rounded">
+             <div>
+      <i class="bi bi-person-circle text-primary me-2"></i>
+      <strong>@grade.Student?.Name</strong>
+    <small class="text-muted">(SSN: @grade.StudentSSN)</small>
+   </div>
+    <div>
+   @if (grade.GradeValue.HasValue)
+       {
+              <span class="badge @(grade.GradeValue >= Model.MinDegree ? "bg-success" : "bg-danger")">
+    @grade.GradeValue.Value
+       </span>
+       }
+               else
+    {
+             <span class="badge bg-secondary">Not Graded</span>
+     }
+       </div>
+        </div>
+  </div>
+     }
+    </div>
+               @if (Model.Grades.Count() > 10)
+      {
+         <p class="text-muted mb-0 mt-2 text-center">...and @(Model.Grades.Count() - 10) more students</p>
+          }
+  </div>
+        </div>
+        }
+        else
+         {
+        <div class="alert alert-success">
+         <i class="bi bi-check-circle"></i> This course has no enrolled students and can be safely deleted.
+           </div>
+     }
+
+       <!-- Impact Summary -->
+             <div class="card bg-light border-info mt-3 mb-3">
+                <div class="card-body">
+          <h6 class="card-title"><i class="bi bi-info-circle"></i> Deletion Impact Summary:</h6>
+        <ul class="mb-0">
+          <li><strong>Students Affected:</strong> @(Model.Grades?.Count ?? 0)</li>
+       <li><strong>Grade Records to be Deleted:</strong> @(Model.Grades?.Count ?? 0)</li>
+         <li><strong>Department:</strong> @(Model.Department?.Name ?? "None")</li>
+          <li><strong>Instructor Unassigned:</strong> @(Model.Instructor?.Name ?? "None")</li>
+          </ul>
+ </div>
+       </div>
+
+         <!-- Delete Confirmation Form -->
+       <form asp-action="DeleteCourseConfirmed" method="post" class="mt-4">
+    <input type="hidden" name="id" value="@Model.Num" />
+
+       @if (Model.Grades?.Any() == true)
+{
+        <div class="alert alert-warning">
+ <i class="bi bi-exclamation-triangle"></i>
+<strong>Warning:</strong> This course has enrolled students. Deleting will permanently remove all grade records.
+          </div>
+       }
+
+    <div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" id="confirmDelete" required />
+     <label class="form-check-label text-danger" for="confirmDelete">
+<strong>I understand that this action cannot be undone and will delete all associated grade records</strong>
+ </label>
+         </div>
+
+<div class="d-flex justify-content-between">
+                 <a asp-action="Courses" class="btn btn-secondary btn-lg">
+   <i class="bi bi-arrow-left"></i> Cancel
+           </a>
+               <button type="submit" class="btn btn-danger btn-lg">
+    <i class="bi bi-trash-fill"></i> Yes, Delete Course
+        </button>
+      </div>
+     </form>
+    </div>
+      </div>
+  </div>
+    </div>
+</div>
+
+<style>
+.card-body table th {
+    font-weight: 600;
+    color: #6c757d;
+}
+</style>

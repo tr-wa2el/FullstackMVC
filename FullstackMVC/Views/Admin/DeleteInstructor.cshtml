@@ -1,0 +1,197 @@
+﻿@model FullstackMVC.Models.Instructor
+
+@{
+    ViewData["Title"] = "Delete Instructor";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+ <div class="col-md-10">
+   <div class="card shadow border-danger">
+    <div class="card-header bg-danger text-white">
+       <h3 class="mb-0">
+         <i class="bi bi-trash"></i> Delete Instructor
+        </h3>
+      </div>
+        <div class="card-body">
+    @if (TempData["ErrorMessage"] != null)
+ {
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+       <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+ <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+ </div>
+}
+
+         <div class="alert alert-warning">
+<i class="bi bi-exclamation-triangle-fill"></i>
+      <strong>Warning!</strong> Are you sure you want to delete this instructor? This action cannot be undone.
+     </div>
+
+       <!-- Instructor Information Cards -->
+    <div class="row mb-4">
+      <!-- Personal Information -->
+    <div class="col-md-6">
+    <div class="card bg-light">
+   <div class="card-header bg-secondary text-white">
+     <h6 class="mb-0"><i class="bi bi-person-badge"></i> Personal Information</h6>
+         </div>
+    <div class="card-body">
+     <table class="table table-borderless mb-0">
+      <tr>
+       <th width="40%">ID:</th>
+       <td><span class="badge bg-primary">#@Model.Id</span></td>
+         </tr>
+     <tr>
+        <th>Name:</th>
+         <td><strong>@Model.Name</strong></td>
+     </tr>
+       <tr>
+    <th>Email:</th>
+        <td>@Model.Email</td>
+       </tr>
+  <tr>
+    <th>Age:</th>
+         <td>@Model.Age years</td>
+    </tr>
+      <tr>
+       <th>Address:</th>
+  <td>@(Model.Address ?? "Not specified")</td>
+   </tr>
+    </table>
+     </div>
+      </div>
+       </div>
+
+ <!-- Professional Information -->
+      <div class="col-md-6">
+  <div class="card bg-light">
+       <div class="card-header bg-info text-white">
+     <h6 class="mb-0"><i class="bi bi-briefcase"></i> Professional Information</h6>
+    </div>
+       <div class="card-body">
+      <table class="table table-borderless mb-0">
+      <tr>
+  <th width="40%">Degree:</th>
+   <td>
+        @if (!string.IsNullOrEmpty(Model.Degree))
+     {
+        <span class="badge bg-success">@Model.Degree</span>
+        }
+  else
+       {
+       <span class="text-muted">Not specified</span>
+     }
+</td>
+      </tr>
+    <tr>
+      <th>Salary:</th>
+   <td><strong class="text-success">@Model.Salary.ToString("C")</strong></td>
+    </tr>
+     <tr>
+        <th>Department:</th>
+       <td>
+        @if (Model.Department != null)
+        {
+      <span class="badge bg-primary">@Model.Department.Name</span>
+     }
+      else
+    {
+        <span class="text-muted">Not Assigned</span>
+       }
+</td>
+     </tr>
+      @if (!string.IsNullOrEmpty(Model.Image))
+     {
+       <tr>
+      <th>Profile:</th>
+      <td>
+       <img src="@Model.Image" alt="Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />
+        </td>
+      </tr>
+    }
+     </table>
+    </div>
+         </div>
+       </div>
+         </div>
+
+           <!-- Courses Teaching -->
+       @if (Model.Courses != null && Model.Courses.Any())
+     {
+        <div class="alert alert-danger mt-3">
+      <h6><i class="bi bi-exclamation-circle"></i> Teaching Assignments:</h6>
+       <p class="mb-2">This instructor is currently teaching <strong>@Model.Courses.Count() course(s)</strong>:</p>
+        <div class="row">
+     @foreach (var course in Model.Courses)
+         {
+   <div class="col-md-6 mb-2">
+      <div class="card border-warning">
+           <div class="card-body py-2">
+       <h6 class="card-title mb-1 text-primary">@course.Name</h6>
+  <p class="card-text mb-0">
+     <small class="text-muted">
+        <i class="bi bi-hash"></i> Course #@course.Num | 
+  <i class="bi bi-people"></i> @(course.Grades?.Count ?? 0) students
+      </small>
+        </p>
+    </div>
+      </div>
+  </div>
+     }
+    </div>
+      <p class="mb-0 mt-2 text-danger">
+     <strong><i class="bi bi-exclamation-triangle"></i> Warning:</strong> 
+     Deleting this instructor will unassign them from all courses.
+    </p>
+     </div>
+   }
+       else
+      {
+      <div class="alert alert-success">
+       <i class="bi bi-check-circle"></i> This instructor is not currently teaching any courses.
+     </div>
+}
+
+    <!-- Related Records Summary -->
+ <div class="card bg-light border-info mt-3">
+        <div class="card-body">
+       <h6 class="card-title"><i class="bi bi-info-circle"></i> Impact Summary:</h6>
+      <ul class="mb-0">
+    <li><strong>Courses Affected:</strong> @(Model.Courses?.Count ?? 0)</li>
+      <li><strong>Department:</strong> @(Model.Department?.Name ?? "None")</li>
+       <li><strong>Total Students Impact:</strong> @(Model.Courses?.SelectMany(c => c.Grades ?? new List<FullstackMVC.Models.Grade>()).Select(g => g.StudentSSN).Distinct().Count() ?? 0)</li>
+    </ul>
+        </div>
+  </div>
+
+     <!-- Delete Confirmation Form -->
+  <form asp-action="DeleteInstructorConfirmed" method="post" class="mt-4">
+          <input type="hidden" name="id" value="@Model.Id" />
+       <div class="form-check mb-3">
+           <input class="form-check-input" type="checkbox" id="confirmDelete" required />
+      <label class="form-check-label text-danger" for="confirmDelete">
+     <strong>I understand that this action cannot be undone</strong>
+    </label>
+        </div>
+
+         <div class="d-flex justify-content-between">
+       <a asp-action="Instructors" class="btn btn-secondary btn-lg">
+      <i class="bi bi-arrow-left"></i> Cancel
+     </a>
+    <button type="submit" class="btn btn-danger btn-lg">
+      <i class="bi bi-trash-fill"></i> Yes, Delete Instructor
+    </button>
+       </div>
+    </form>
+       </div>
+       </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card-body table th {
+    font-weight: 600;
+    color: #6c757d;
+}
+</style>

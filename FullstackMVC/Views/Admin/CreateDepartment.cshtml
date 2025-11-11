@@ -1,0 +1,197 @@
+﻿@model FullstackMVC.Models.Department
+
+@{
+    ViewData["Title"] = "Create Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+  <div class="col-lg-6 col-xl-5">
+      <div class="card shadow-lg">
+     <div class="card-header bg-info text-white">
+      <h3 class="mb-0">
+  <i class="bi bi-building-add"></i> Create New Department
+  </h3>
+        </div>
+        <div class="card-body p-4">
+       <form asp-action="CreateDepartment" method="post" class="needs-validation" novalidate>
+       <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" role="alert">
+   <h6><i class="bi bi-exclamation-triangle"></i> Please fix the following errors:</h6>
+        </div>
+
+       <div class="row g-3">
+     <!-- Department Name -->
+      <div class="col-12">
+       <label asp-for="Name" class="form-label fw-bold">
+     <i class="bi bi-building"></i> Department Name
+    </label>
+           <input asp-for="Name" class="form-control" 
+   placeholder="Enter department name" maxlength="100" required />
+     <span asp-validation-for="Name" class="text-danger small"></span>
+      <div class="form-text">
+       <i class="bi bi-info-circle"></i> Unique name for the department
+        </div>
+  </div>
+
+     <!-- Department Description -->
+        <div class="col-12">
+   <label asp-for="Description" class="form-label fw-bold">
+    <i class="bi bi-journal-text"></i> Description
+   </label>
+      <textarea asp-for="Description" class="form-control" rows="3" 
+     placeholder="Enter department description (optional)" maxlength="500"></textarea>
+      <span asp-validation-for="Description" class="text-danger small"></span>
+           <div class="form-text">
+         <i class="bi bi-info-circle"></i> Maximum 500 characters (optional)
+           </div>
+         </div>
+
+         <!-- Department Manager/Head -->
+   <div class="col-12">
+              <label asp-for="ManagerName" class="form-label fw-bold">
+<i class="bi bi-person-badge"></i> Department Head/Manager
+       </label>
+      <input asp-for="ManagerName" class="form-control" 
+        placeholder="Enter department head name (optional)" maxlength="100" />
+      <span asp-validation-for="ManagerName" class="text-danger small"></span>
+       <div class="form-text">
+   <i class="bi bi-info-circle"></i> Name of the department head (optional)
+        </div>
+           </div>
+
+ <!-- Location -->
+         <div class="col-12">
+    <label asp-for="Location" class="form-label fw-bold">
+        <i class="bi bi-geo-alt"></i> Location
+  </label>
+     <input asp-for="Location" class="form-control" 
+        placeholder="Enter department location (optional)" maxlength="200" />
+    <span asp-validation-for="Location" class="text-danger small"></span>
+      <div class="form-text">
+      <i class="bi bi-info-circle"></i> Building or floor location (optional)
+</div>
+      </div>
+     </div>
+
+    <!-- Action Buttons -->
+      <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+            <a asp-action="Departments" class="btn btn-outline-secondary btn-lg">
+      <i class="bi bi-arrow-left"></i> Back to Departments
+    </a>
+       <div>
+     <button type="reset" class="btn btn-outline-warning me-2">
+          <i class="bi bi-arrow-clockwise"></i> Reset Form
+   </button>
+        <button type="submit" class="btn btn-info btn-lg">
+      <i class="bi bi-save"></i> Create Department
+       </button>
+  </div>
+        </div>
+ </form>
+     </div>
+      </div>
+      </div>
+   </div>
+</div>
+
+@section Scripts {
+    @{
+     await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+      // Bootstrap form validation
+        (function() {
+        'use strict';
+  window.addEventListener('load', function() {
+var forms = document.getElementsByClassName('needs-validation');
+var validation = Array.prototype.filter.call(forms, function(form) {
+     form.addEventListener('submit', function(event) {
+ if (form.checkValidity() === false) {
+   event.preventDefault();
+           event.stopPropagation();
+       }
+      form.classList.add('was-validated');
+    }, false);
+     });
+  }, false);
+        })();
+
+        // Show validation summary if there are model errors
+@if (!ViewData.ModelState.IsValid)
+   {
+            <text>
+       document.addEventListener('DOMContentLoaded', function() {
+         document.querySelector('.alert-danger').classList.remove('d-none');
+  });
+   </text>
+        }
+
+     // Auto-focus on department name field
+ document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('Name').focus();
+    });
+    </script>
+
+    <style>
+     .card {
+   border: none;
+      border-radius: 15px;
+   }
+     
+      .card-header {
+   border-radius: 15px 15px 0 0 !important;
+    padding: 1.5rem;
+   }
+
+   .form-control, .form-select {
+      border-radius: 10px;
+   padding: 0.75rem;
+      border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+  .form-control:focus, .form-select:focus {
+   border-color: #667eea;
+     box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            transform: translateY(-1px);
+     }
+     
+ .btn {
+      border-radius: 10px;
+      padding: 0.75rem 1.5rem;
+         font-weight: 500;
+        transition: all 0.3s ease;
+  }
+       
+        .btn:hover {
+         transform: translateY(-2px);
+       box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      }
+
+        .form-label {
+    color: #495057;
+     margin-bottom: 0.5rem;
+        }
+     
+   .form-text {
+  color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+    .border-top {
+    border-color: #e9ecef !important;
+        }
+   
+  .was-validated .form-control:valid,
+      .was-validated .form-select:valid {
+            border-color: #28a745;
+        }
+  
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+        border-color: #dc3545;
+        }
+  </style>
+}

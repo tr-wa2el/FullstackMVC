@@ -17,7 +17,7 @@
         public RateLimitingMiddleware(
             RequestDelegate next,
             ILogger<RateLimitingMiddleware> logger,
-            int requestLimit = 100,
+            int requestLimit = 1000,
             int timeWindowSeconds = 60
         )
         {
