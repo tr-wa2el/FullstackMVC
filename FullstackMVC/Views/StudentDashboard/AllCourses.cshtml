@@ -1,0 +1,331 @@
+﻿@model IEnumerable<FullstackMVC.Models.Course>
+
+@{
+    ViewData["Title"] = "All Courses";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+   <div class="col-12">
+  <h1 class="mb-4 text-dark">
+      <i class="bi bi-collection text-primary"></i> <strong>All Available Courses</strong>
+  </h1>
+     </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+  <!-- Unified Statistics Cards -->
+        <div class="row g-4 mb-4">
+ <div class="col-md-4">
+      <div class="card stats-card primary">
+  <div class="card-body text-center py-4">
+    <i class="bi bi-book-half" style="font-size: 3.5rem; opacity: 0.9;"></i>
+ <h2 class="mt-3 fw-bold">@Model.Count()</h2>
+  <p class="mb-0 fs-5">Total Courses</p>
+   </div>
+   <div class="position-absolute top-0 end-0 p-2">
+     <i class="bi bi-mortarboard-fill" style="font-size: 2rem; opacity: 0.3;"></i>
+   </div>
+ </div>
+     </div>
+         <div class="col-md-4">
+      <div class="card stats-card success">
+  <div class="card-body text-center py-4">
+     <i class="bi bi-building-fill" style="font-size: 3.5rem; opacity: 0.9;"></i>
+        <h2 class="mt-3 fw-bold">@Model.Select(c => c.DeptId).Distinct().Count()</h2>
+     <p class="mb-0 fs-5">Departments</p>
+    </div>
+   <div class="position-absolute top-0 end-0 p-2">
+ <i class="bi bi-geo-alt-fill" style="font-size: 2rem; opacity: 0.3;"></i>
+   </div>
+   </div>
+     </div>
+    <div class="col-md-4">
+      <div class="card stats-card info">
+        <div class="card-body text-center py-4">
+<i class="bi bi-trophy-fill" style="font-size: 3.5rem; opacity: 0.9;"></i>
+ <h2 class="mt-3 fw-bold">@string.Format("{0:F0}", Model.Average(c => c.Degree))</h2>
+        <p class="mb-0 fs-5">Avg Max Grade</p>
+    </div>
+   <div class="position-absolute top-0 end-0 p-2">
+     <i class="bi bi-award-fill" style="font-size: 2rem; opacity: 0.3;"></i>
+   </div>
+   </div>
+ </div>
+  </div>
+
+ <!-- Enhanced Filter Section -->
+  <div class="row mb-4">
+       <div class="col-12">
+     <div class="card" style="border-left: 4px solid #667eea;">
+  <div class="card-body">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+     <h4 class="mb-0 text-primary"><i class="bi bi-grid-3x3-gap-fill"></i> Course Catalog</h4>
+     <small class="text-muted fs-6">Explore comprehensive courses offered by our university</small>
+    </div>
+ <div class="col-md-4 text-end">
+     <button class="btn btn-outline-primary btn-sm" disabled>
+  <i class="bi bi-funnel-fill"></i> Advanced Filter (Coming Soon)
+      </button>
+      </div>
+  </div>
+  </div>
+      </div>
+    </div>
+    </div>
+
+ <!-- Unified Courses Grid -->
+     <div class="row g-4">
+      @foreach (var course in Model.OrderBy(c => c.Department?.Name).ThenBy(c => c.Name))
+      {
+    <div class="col-md-6 col-lg-4">
+   <div class="card course-card h-100">
+         <div class="card-header">
+        <h6 class="mb-0 fw-bold">
+  <i class="bi bi-bookmark-fill"></i> Course #@course.Num
+    </h6>
+   </div>
+ <div class="card-body d-flex flex-column">
+  <h4 class="card-title text-dark fw-bold mb-3">@course.Name</h4>
+    
+       @if (!string.IsNullOrEmpty(course.Topic))
+     {
+<div class="mb-3">
+  <span class="badge bg-light text-dark border px-3 py-2">
+  <i class="bi bi-tag-fill text-primary"></i> @course.Topic
+    </span>
+</div>
+     }
+     
+  @if (!string.IsNullOrEmpty(course.Description))
+   {
+ <p class="card-text text-muted mb-3" style="font-size: 0.95rem; line-height: 1.5;">@course.Description</p>
+   }
+
+       <div class="mt-auto">
+ <div class="row text-center mb-3 g-2">
+   <div class="col-4">
+ <div class="grade-indicator success">
+    <div class="h5 mb-1 text-success fw-bold">@course.Degree</div>
+     <small class="text-muted fw-semibold">Max Grade</small>
+     </div>
+  </div>
+   <div class="col-4">
+ <div class="grade-indicator warning">
+    <div class="h5 mb-1 text-warning fw-bold">@course.MinDegree</div>
+    <small class="text-muted fw-semibold">Min Grade</small>
+    </div>
+  </div>
+      <div class="col-4">
+   <div class="grade-indicator info">
+   <div class="h5 mb-1 text-info fw-bold">
+          @(((course.MinDegree / course.Degree) * 100).ToString("F0"))%
+       </div>
+       <small class="text-muted fw-semibold">Pass Rate</small>
+   </div>
+    </div>
+  </div>
+       
+   <div class="d-flex justify-content-between align-items-center mt-3">
+        <span class="badge bg-dark px-3 py-2 text-white fw-normal">
+    <i class="bi bi-building"></i> @course.Department?.Name
+   </span>
+      @if (!string.IsNullOrEmpty(course.Instructor?.Name))
+    {
+        <span class="badge bg-primary px-3 py-2">
+       <i class="bi bi-person-fill"></i> @course.Instructor.Name
+        </span>
+      }
+      else
+      {
+        <span class="badge bg-secondary px-3 py-2">
+<i class="bi bi-person-x"></i> No Instructor
+ </span>
+      }
+     </div>
+      </div>
+    </div>
+    </div>
+   </div>
+    }
+ </div>
+    }
+    else
+   {
+  <!-- No Courses Available -->
+   <div class="row">
+     <div class="col-12">
+       <div class="card text-center">
+  <div class="card-body py-5">
+  <i class="bi bi-book text-primary" style="font-size: 6rem; opacity: 0.7;"></i>
+   <h3 class="mt-4 text-dark">No Courses Available</h3>
+    <p class="text-muted fs-5">There are currently no courses in the system.</p>
+<button class="btn btn-primary btn-lg mt-3">
+    <i class="bi bi-plus-circle"></i> Add Course
+      </button>
+   </div>
+    </div>
+   </div>
+ </div>
+    }
+
+    <!-- Unified Quick Actions -->
+ <div class="row mt-5">
+    <div class="col-12">
+            <div class="card">
+   <div class="card-header">
+      <h5 class="mb-0"><i class="bi bi-lightning-fill text-warning"></i> Quick Actions</h5>
+   </div>
+   <div class="card-body">
+    <div class="d-flex flex-wrap gap-3">
+  <a asp-action="Dashboard" class="btn btn-primary">
+    <i class="bi bi-speedometer2"></i> Dashboard
+  </a>
+      <a asp-action="MyCourses" class="btn btn-success">
+   <i class="bi bi-book-fill"></i> My Courses
+  </a>
+  <a asp-action="Departments" class="btn btn-info">
+ <i class="bi bi-building"></i> Departments
+      </a>
+      <a asp-action="EditProfile" class="btn btn-warning">
+   <i class="bi bi-person-gear"></i> Edit Profile
+    </a>
+    </div>
+    </div>
+     </div>
+     </div>
+  </div>
+</div>
+
+<style>
+.shadow-hover:hover {
+    box-shadow: 0 1rem 2rem rgba(0,0,0,.2) !important;
+    transform: translateY(-8px) scale(1.02) !important;
+}
+
+.course-card {
+  border-radius: 15px !important;
+  overflow: hidden;
+}
+
+.course-card:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+}
+
+.card-header {
+  border-radius: 15px 15px 0 0 !important;
+}
+
+.badge {
+  font-size: 0.85rem !important;
+  border-radius: 8px !important;
+}
+
+.btn {
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+}
+
+.card {
+  border-radius: 15px !important;
+}
+
+/* Unified color system */
+.text-primary {
+  color: #007bff !important;
+}
+
+.bg-primary {
+  background-color: #007bff !important;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.bg-dark {
+  background-color: #343a40 !important;
+}
+
+.border-primary {
+  border-color: #007bff !important;
+}
+
+.border-success {
+  border-color: #28a745 !important;
+}
+
+.border-info {
+  border-color: #17a2b8 !important;
+}
+
+.border-warning {
+  border-color: #ffc107 !important;
+}
+
+.border-danger {
+  border-color: #dc3545 !important;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.stats-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.stats-card.primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.stats-card.success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.stats-card.info {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.grade-indicator {
+  border-radius: 10px;
+  padding: 10px;
+  color: #fff;
+}
+
+.grade-indicator.success {
+  background-color: #28a745;
+}
+
+.grade-indicator.warning {
+  background-color: #ffc107;
+}
+
+.grade-indicator.info {
+  background-color: #17a2b8;
+}
+</style>

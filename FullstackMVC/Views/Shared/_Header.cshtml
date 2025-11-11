@@ -1,0 +1,205 @@
+﻿<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container-fluid">
+      <!-- Brand/Logo -->
+    <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+        <i class="bi bi-building me-2" style="font-size: 1.5rem;"></i>
+                <span class="fw-bold">University System</span>
+   </a>
+
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+         </button>
+
+      <!-- Navigation Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Home -->
+     <li class="nav-item">
+      <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-house-door"></i> Home
+               </a>
+           </li>
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+   {
+ <!-- Admin Navigation -->
+  @if (User.IsInRole("Admin"))
+{
+             <li class="nav-item">
+      <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">
+             <i class="bi bi-speedometer2"></i> Dashboard
+         </a>
+      </li>
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+     data-bs-toggle="dropdown" aria-expanded="false">
+       <i class="bi bi-gear-fill"></i> Management
+            </a>
+     <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+         <li><a class="dropdown-item" asp-controller="Admin" asp-action="Students"><i class="bi bi-people"></i> Students</a></li>
+     <li><a class="dropdown-item" asp-controller="Admin" asp-action="Instructors"><i class="bi bi-person-badge"></i> Instructors</a></li>
+     <li><a class="dropdown-item" asp-controller="Admin" asp-action="Courses"><i class="bi bi-book"></i> Courses</a></li>
+         <li><a class="dropdown-item" asp-controller="Admin" asp-action="Departments"><i class="bi bi-building"></i> Departments</a></li>
+     <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Users"><i class="bi bi-people-fill"></i> Users & Roles</a></li>
+             </ul>
+       </li>
+      }
+
+      <!-- Student Navigation -->
+             @if (User.IsInRole("Student"))
+    {
+    <li class="nav-item">
+      <a class="nav-link" asp-controller="StudentDashboard" asp-action="Dashboard">
+       <i class="bi bi-speedometer2"></i> My Dashboard
+      </a>
+        </li>
+     <li class="nav-item">
+            <a class="nav-link" asp-controller="StudentDashboard" asp-action="MyCourses">
+    <i class="bi bi-book-fill"></i> My Courses
+ </a>
+   </li>
+      <li class="nav-item">
+         <a class="nav-link" asp-controller="StudentDashboard" asp-action="AllCourses">
+       <i class="bi bi-collection"></i> All Courses
+         </a>
+       </li>
+    <li class="nav-item">
+          <a class="nav-link" asp-controller="StudentDashboard" asp-action="Departments">
+           <i class="bi bi-building"></i> Departments
+    </a>
+     </li>
+  }
+
+      <!-- Instructor Navigation -->
+ @if (User.IsInRole("Instructor"))
+{
+         <li class="nav-item">
+     <a class="nav-link" asp-controller="InstructorDashboard" asp-action="Dashboard">
+        <i class="bi bi-speedometer2"></i> My Dashboard
+      </a>
+             </li>
+         <li class="nav-item">
+            <a class="nav-link" asp-controller="InstructorDashboard" asp-action="MyCourses">
+             <i class="bi bi-book-half"></i> My Courses
+          </a>
+  </li>
+            }
+      }
+
+    <!-- About -->
+        <li class="nav-item">
+   <a class="nav-link" asp-controller="Home" asp-action="Privacy">
+     <i class="bi bi-info-circle"></i> About
+            </a>
+   </li>
+          </ul>
+
+         <!-- Right Side - User Menu -->
+        <div class="d-flex align-items-center">
+          @if (User.Identity != null && User.Identity.IsAuthenticated)
+   {
+        <!-- Success Message Display -->
+     @if (TempData["SuccessMessage"] != null)
+         {
+      <div class="me-3">
+  <small class="text-white"><i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]</small>
+       </div>
+      }
+
+       <!-- User Menu (Authenticated) -->
+    <div class="dropdown">
+              <a class="btn btn-outline-light btn-sm dropdown-toggle" href="#" role="button"
+         id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+         <i class="bi bi-person-circle"></i> @User.Identity.Name
+</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+           <li>
+               <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+         <i class="bi bi-person"></i> Profile
+   </a>
+     </li>
+     @if (User.IsInRole("Student"))
+   {
+ <li>
+        <a class="dropdown-item" asp-controller="StudentDashboard" asp-action="EditProfile">
+<i class="bi bi-pencil"></i> Edit Profile
+      </a>
+       </li>
+ }
+         @if (User.IsInRole("Instructor"))
+     {
+     <li>
+    <a class="dropdown-item" asp-controller="InstructorDashboard" asp-action="EditProfile">
+          <i class="bi bi-pencil"></i> Edit Profile
+        </a>
+        </li>
+          }
+                    <li>
+          <span class="dropdown-item-text">
+   <small class="text-muted">
+      @if (User.IsInRole("Admin"))
+      {
+           <span class="badge bg-danger">Admin</span>
+        }
+       else if (User.IsInRole("Instructor"))
+       {
+   <span class="badge bg-warning text-dark">Instructor</span>
+         }
+       else if (User.IsInRole("Student"))
+     {
+         <span class="badge bg-info">Student</span>
+    }
+             </small>
+           </span>
+     </li>
+        <li><hr class="dropdown-divider"></li>
+         <li>
+         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+         <button type="submit" class="dropdown-item">
+ <i class="bi bi-box-arrow-right"></i> Logout
+             </button>
+     </form>
+       </li>
+            </ul>
+    </div>
+  }
+               else
+        {
+ <!-- Login/Register Links (Not Authenticated) -->
+  <a class="btn btn-outline-light btn-sm me-2" asp-controller="Account" asp-action="Login">
+     <i class="bi bi-box-arrow-in-right"></i> Login
+   </a>
+         <a class="btn btn-light btn-sm" asp-controller="Account" asp-action="Register">
+                 <i class="bi bi-person-plus"></i> Register
+    </a>
+          }
+        </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Messages -->
+    @if (TempData["SuccessMessage"] != null || TempData["ErrorMessage"] != null)
+    {
+        <div class="container-fluid mt-2">
+        @if (TempData["SuccessMessage"] != null)
+            {
+         <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+       </div>
+            }
+ @if (TempData["ErrorMessage"] != null)
+     {
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+ </div>
+    }
+     </div>
+    }
+</header>

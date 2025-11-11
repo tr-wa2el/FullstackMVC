@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+    var stats = ViewBag.Stats;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+       <h1 class="mb-4">
+   <i class="fas fa-shield-alt text-danger"></i> Admin Panel
+        </h1>
+         <div class="alert alert-success" role="alert">
+                <i class="fas fa-check-circle"></i> Access Granted - This page is only accessible via URL ending with <code>/admin</code>
+            </div>
+     </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+     <div class="card text-white bg-primary mb-3">
+                <div class="card-header">
+ <i class="fas fa-book"></i> Total Courses
+     </div>
+              <div class="card-body">
+     <h2 class="card-title">@stats.TotalCourses</h2>
+            <p class="card-text">Courses in system</p>
+         </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+         <div class="card text-white bg-success mb-3">
+              <div class="card-header">
+  <i class="fas fa-building"></i> Total Departments
+  </div>
+        <div class="card-body">
+  <h2 class="card-title">@stats.TotalDepartments</h2>
+      <p class="card-text">Departments in system</p>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+   <div class="card text-white bg-info mb-3">
+    <div class="card-header">
+         <i class="fas fa-user-graduate"></i> Total Students
+       </div>
+  <div class="card-body">
+  <h2 class="card-title">@stats.TotalStudents</h2>
+        <p class="card-text">Students enrolled</p>
+       </div>
+     </div>
+    </div>
+
+ <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+    <div class="card-header">
+          <i class="fas fa-chalkboard-teacher"></i> Total Instructors
+                </div>
+                <div class="card-body">
+          <h2 class="card-title">@stats.TotalInstructors</h2>
+       <p class="card-text">Instructors teaching</p>
+          </div>
+            </div>
+     </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+        <div class="card">
+       <div class="card-header bg-dark text-white">
+  <i class="fas fa-cog"></i> Admin Actions
+       </div>
+           <div class="card-body">
+  <div class="list-group">
+     <a href="@Url.Action("ManageCourses", "Course")/admin" class="list-group-item list-group-item-action">
+            <i class="fas fa-tasks"></i> Manage Courses
+    </a>
+      <a href="@Url.Action("GetAll", "Department")" class="list-group-item list-group-item-action">
+     <i class="fas fa-building"></i> View Departments
+       </a>
+     <a href="@Url.Action("GetAll", "Student")" class="list-group-item list-group-item-action">
+                <i class="fas fa-users"></i> View Students
+    </a>
+           <a href="@Url.Action("GetAll", "Instructor")" class="list-group-item list-group-item-action">
+   <i class="fas fa-chalkboard-teacher"></i> View Instructors
+   </a>
+ </div>
+          </div>
+   </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+ <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> 
+ <strong>Security Note:</strong> This page is protected by the <code>[RequireAdminUrl]</code> filter. 
+          Only URLs ending with <code>/admin</code> can access this page.
+         </div>
+        </div>
+    </div>
+</div>

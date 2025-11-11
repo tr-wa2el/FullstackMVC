@@ -1,0 +1,49 @@
+﻿@model FullstackMVC.Models.Student
+
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<div class="container mt-4">
+    <h1 class="text-danger">Delete Student</h1>
+    <hr />
+
+    <div class="alert alert-warning" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong>Warning!</strong> Are you sure you want to delete this student?
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">SSN</dt>
+                <dd class="col-sm-9">@Model.SSN</dd>
+
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Age</dt>
+                <dd class="col-sm-9">@Model.Age</dd>
+
+                <dt class="col-sm-3">Gender</dt>
+                <dd class="col-sm-9">@Model.Gender</dd>
+
+                <dt class="col-sm-3">Address</dt>
+                <dd class="col-sm-9">@(Model.Address ?? "N/A")</dd>
+
+                <dt class="col-sm-3">Department</dt>
+                <dd class="col-sm-9">@(Model.Department?.Name ?? "N/A")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" method="post" class="mt-4">
+        <input type="hidden" asp-for="SSN" />
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Delete
+        </button>
+        <a asp-action="GetAll" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Cancel
+        </a>
+    </form>
+</div>

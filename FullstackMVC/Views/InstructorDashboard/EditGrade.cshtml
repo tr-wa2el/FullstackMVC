@@ -1,0 +1,198 @@
+﻿@model FullstackMVC.Models.Grade
+
+@{
+    ViewData["Title"] = "Edit Grade";
+}
+
+<div class="container mt-5">
+ <div class="row justify-content-center">
+   <div class="col-md-8">
+      <div class="card shadow">
+         <div class="card-header bg-warning text-dark">
+     <h2 class="mb-0">
+         <i class="bi bi-pencil"></i> Edit Student Grade
+      </h2>
+    <p class="mb-0">
+  Student: <strong>@Model.Student?.Name</strong> | 
+      Course: <strong>@Model.Course?.Name</strong>
+     </p>
+       </div>
+     <div class="card-body">
+          <div class="alert alert-info">
+      <i class="bi bi-info-circle"></i> 
+       <strong>Grade Range:</strong> 
+       Min: @ViewBag.MinDegree | Max: @ViewBag.MaxDegree
+       </div>
+
+       <form asp-action="EditGrade" method="post">
+   <input type="hidden" asp-for="Id" />
+      <input type="hidden" asp-for="StudentSSN" />
+   <input type="hidden" asp-for="CourseNum" />
+       
+      <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+       <!-- Student Info (Read-Only) -->
+      <div class="row mb-4">
+      <div class="col-md-6">
+    <label class="form-label">Student</label>
+     <input type="text" class="form-control" value="@Model.Student?.Name (SSN: @Model.Student?.SSN)" readonly />
+   </div>
+        <div class="col-md-6">
+    <label class="form-label">Course</label>
+      <input type="text" class="form-control" value="@Model.Course?.Name (Code: @Model.Course?.Num)" readonly />
+     </div>
+   </div>
+
+     <!-- Current Grade Info -->
+   <div class="mb-4">
+     <div class="card bg-light">
+       <div class="card-body">
+      <h6 class="card-title">Current Grade Information</h6>
+       <div class="row">
+    <div class="col-md-3">
+      <strong>Current Grade:</strong> @Model.GradeValue / @ViewBag.MaxDegree
+    </div>
+     <div class="col-md-3">
+ <strong>Current Percentage:</strong> @string.Format("{0:F1}%", (Model.GradeValue / ViewBag.MaxDegree) * 100)
+    </div>
+       <div class="col-md-3">
+       <strong>Current Status:</strong> 
+  @if (Model.GradeValue >= ViewBag.MinDegree)
+   {
+     <span class="badge bg-success">Passed</span>
+          }
+    else
+       {
+     <span class="badge bg-danger">Failed</span>
+       }
+  </div>
+      <div class="col-md-3">
+      <strong>Last Updated:</strong> Now
+  </div>
+    </div>
+    </div>
+      </div>
+        </div>
+
+      <!-- Edit Grade -->
+       <div class="mb-4">
+   <label asp-for="GradeValue" class="form-label">New Grade</label>
+     <div class="input-group input-group-lg">
+    <input asp-for="GradeValue" class="form-control" type="number" 
+         min="0" max="@ViewBag.MaxDegree" step="0.1" 
+      placeholder="Enter new grade (0 - @ViewBag.MaxDegree)" />
+     <span class="input-group-text">/ @ViewBag.MaxDegree</span>
+   </div>
+    <span asp-validation-for="GradeValue" class="text-danger"></span>
+      <small class="form-text text-muted">
+    Minimum passing grade: @ViewBag.MinDegree
+ </small>
+     </div>
+
+        <!-- Grade Preview -->
+       <div class="mb-4">
+      <div class="card bg-light">
+      <div class="card-body">
+     <h6 class="card-title">New Grade Preview</h6>
+      <div id="gradePreview" class="d-none">
+      <div class="row">
+        <div class="col-md-3">
+       <strong>New Grade:</strong> <span id="previewGrade">-</span> / @ViewBag.MaxDegree
+   </div>
+     <div class="col-md-3">
+     <strong>New Percentage:</strong> <span id="previewPercentage">-</span>%
+</div>
+     <div class="col-md-3">
+   <strong>New Status:</strong> <span id="previewStatus" class="badge">-</span>
+     </div>
+     <div class="col-md-3">
+        <strong>Change:</strong> <span id="previewChange">-</span>
+    </div>
+         </div>
+   <div class="mt-2">
+   <div class="progress">
+     <div id="previewProgressBar" class="progress-bar" style="width: 0%"></div>
+    </div>
+   </div>
+      </div>
+        </div>
+        </div>
+   </div>
+
+        <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-warning btn-lg">
+    <i class="bi bi-save"></i> Update Grade
+    </button>
+     <a asp-action="CourseStudents" asp-route-courseId="@Model.CourseNum" class="btn btn-secondary btn-lg">
+    <i class="bi bi-arrow-left"></i> Back to Students
+     </a>
+    </div>
+      </form>
+    </div>
+     </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  
+    <script>
+ document.addEventListener('DOMContentLoaded', function() {
+      const gradeInput = document.querySelector('input[name="GradeValue"]');
+   const preview = document.getElementById('gradePreview');
+       const previewGrade = document.getElementById('previewGrade');
+      const previewPercentage = document.getElementById('previewPercentage');
+      const previewStatus = document.getElementById('previewStatus');
+      const previewChange = document.getElementById('previewChange');
+    const previewProgressBar = document.getElementById('previewProgressBar');
+  
+    const maxGrade = @ViewBag.MaxDegree;
+  const minGrade = @ViewBag.MinDegree;
+     const currentGrade = @Model.GradeValue;
+
+      if (gradeInput) {
+     gradeInput.addEventListener('input', function() {
+     const value = parseFloat(this.value);
+ 
+      if (!isNaN(value) && value >= 0) {
+    preview.classList.remove('d-none');
+  
+ const percentage = (value / maxGrade) * 100;
+        const isPassing = value >= minGrade;
+const change = value - currentGrade;
+    
+       previewGrade.textContent = value;
+    previewPercentage.textContent = percentage.toFixed(1);
+ 
+    if (isPassing) {
+       previewStatus.textContent = 'Passed';
+       previewStatus.className = 'badge bg-success';
+ previewProgressBar.className = 'progress-bar bg-success';
+     } else {
+       previewStatus.textContent = 'Failed';
+      previewStatus.className = 'badge bg-danger';
+       previewProgressBar.className = 'progress-bar bg-danger';
+     }
+ 
+      // Show change
+     if (change > 0) {
+     previewChange.innerHTML = '<span class="text-success">+' + change.toFixed(1) + '</span>';
+    } else if (change < 0) {
+    previewChange.innerHTML = '<span class="text-danger">' + change.toFixed(1) + '</span>';
+     } else {
+    previewChange.innerHTML = '<span class="text-muted">No change</span>';
+   }
+     
+       previewProgressBar.style.width = percentage + '%';
+        } else {
+       preview.classList.add('d-none');
+     }
+       });
+    
+     // Trigger initial preview
+    gradeInput.dispatchEvent(new Event('input'));
+     }
+    });
+    </script>
+}

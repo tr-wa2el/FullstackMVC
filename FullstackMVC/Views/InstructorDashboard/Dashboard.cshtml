@@ -1,0 +1,166 @@
+﻿@model FullstackMVC.Models.Instructor
+
+@{
+    ViewData["Title"] = "Instructor Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+    <div class="col-12">
+   <h1 class="mb-4">
+       <i class="bi bi-person-badge-fill"></i> Welcome, @Model.Name!
+  </h1>
+   </div>
+    </div>
+
+    <!-- Instructor Info Card -->
+<div class="row mb-4">
+<div class="col-md-4">
+ <div class="card shadow">
+ <div class="card-header bg-success text-white">
+     <h5 class="mb-0"><i class="bi bi-person-badge"></i> Your Profile</h5>
+         </div>
+    <div class="card-body">
+    <p><strong>ID:</strong> @Model.Id</p>
+       <p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Age:</strong> @Model.Age years</p>
+  <p><strong>Degree:</strong> @Model.Degree</p>
+   <p><strong>Department:</strong> @Model.Department?.Name</p>
+      <p><strong>Address:</strong> @Model.Address</p>
+    <a asp-action="EditProfile" class="btn btn-success w-100 mt-3">
+      <i class="bi bi-pencil-fill"></i> Edit Profile
+        </a>
+   </div>
+     </div>
+  </div>
+
+     <div class="col-md-8">
+ <div class="card shadow">
+     <div class="card-header bg-primary text-white">
+<h5 class="mb-0"><i class="bi bi-book-fill"></i> Teaching Overview</h5>
+        </div>
+        <div class="card-body">
+@if (Model.Courses != null && Model.Courses.Any())
+      {
+    var totalStudents = Model.Courses.SelectMany(c => c.Grades ?? new List<FullstackMVC.Models.Grade>()).Select(g => g.StudentSSN).Distinct().Count();
+    
+       <div class="row text-center">
+    <div class="col-md-4">
+       <h3 class="text-primary">@Model.Courses.Count()</h3>
+       <p class="text-muted">Courses Teaching</p>
+        </div>
+       <div class="col-md-4">
+ <h3 class="text-success">@totalStudents</h3>
+<p class="text-muted">Total Students</p>
+        </div>
+        <div class="col-md-4">
+<h3 class="text-info">@Model.Department?.Name</h3>
+  <p class="text-muted">Department</p>
+   </div>
+      </div>
+   }
+        else
+       {
+ <p class="text-muted">No courses assigned yet.</p>
+       }
+ </div>
+  </div>
+    </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-4 mb-4">
+ <div class="col-md-4">
+   <div class="card shadow h-100">
+     <div class="card-body text-center">
+     <i class="bi bi-book-half text-primary" style="font-size: 3rem;"></i>
+  <h5 class="mt-3">My Courses</h5>
+      <p class="text-muted">View and manage your courses</p>
+       <a asp-action="MyCourses" class="btn btn-primary">View Courses</a>
+   </div>
+  </div>
+        </div>
+
+        <div class="col-md-4">
+      <div class="card shadow h-100">
+   <div class="card-body text-center">
+       <i class="bi bi-people-fill text-success" style="font-size: 3rem;"></i>
+<h5 class="mt-3">Manage Students</h5>
+       <p class="text-muted">View students and their grades</p>
+   <a asp-action="MyCourses" class="btn btn-success">Manage Students</a>
+     </div>
+ </div>
+    </div>
+
+<div class="col-md-4">
+  <div class="card shadow h-100">
+    <div class="card-body text-center">
+        <i class="bi bi-person-circle text-warning" style="font-size: 3rem;"></i>
+  <h5 class="mt-3">My Profile</h5>
+   <p class="text-muted">Update your information</p>
+    <a asp-action="EditProfile" class="btn btn-warning">Edit Profile</a>
+   </div>
+ </div>
+    </div>
+    </div>
+
+ <!-- Courses List -->
+    @if (Model.Courses != null && Model.Courses.Any())
+    {
+ <div class="row">
+      <div class="col-12">
+      <div class="card shadow">
+  <div class="card-header bg-dark text-white">
+<h5 class="mb-0"><i class="bi bi-list-ul"></i> My Courses</h5>
+  </div>
+       <div class="card-body">
+    <div class="table-responsive">
+<table class="table table-hover">
+   <thead>
+   <tr>
+<th>Course Code</th>
+       <th>Course Name</th>
+    <th>Department</th>
+ <th>Max Degree</th>
+      <th>Students Enrolled</th>
+ <th>Actions</th>
+  </tr>
+  </thead>
+<tbody>
+    @foreach (var course in Model.Courses)
+   {
+ <tr>
+     <td>@course.Num</td>
+   <td>@course.Name</td>
+       <td>@course.Department?.Name</td>
+       <td>@course.Degree</td>
+     <td>@(course.Grades?.Count() ?? 0)</td>
+ <td>
+   <a asp-action="CourseStudents" asp-route-courseId="@course.Num" class="btn btn-sm btn-primary">
+       <i class="bi bi-people-fill"></i> View Students
+    </a>
+     <a asp-action="AddGrade" asp-route-courseId="@course.Num" class="btn btn-sm btn-success">
+    <i class="bi bi-plus-circle"></i> Add Grade
+  </a>
+ </td>
+    </tr>
+   }
+     </tbody>
+       </table>
+  </div>
+        </div>
+      </div>
+  </div>
+        </div>
+    }
+ else
+    {
+  <div class="row">
+      <div class="col-12">
+    <div class="alert alert-info">
+<i class="bi bi-info-circle"></i> You don't have any courses assigned yet. Please contact the administrator.
+     </div>
+ </div>
+      </div>
+    }
+</div>

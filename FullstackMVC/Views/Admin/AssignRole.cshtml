@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Assign Role";
+    var user = ViewBag.User as FullstackMVC.Models.ApplicationUser;
+    var userRoles = ViewBag.UserRoles as IList<string>;
+ var allRoles = ViewBag.AllRoles as List<string>;
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+  <div class="col-md-6">
+   <div class="card shadow">
+      <div class="card-header bg-success text-white">
+    <h2 class="mb-0">Assign Role to User</h2>
+  </div>
+        <div class="card-body">
+     <div class="mb-4">
+   <h5>User Information</h5>
+      <p><strong>Username:</strong> @user?.UserName</p>
+    <p><strong>Email:</strong> @user?.Email</p>
+ <p><strong>Current Roles:</strong> 
+         @if (userRoles != null && userRoles.Any())
+     {
+       @string.Join(", ", userRoles)
+    }
+    else
+  {
+      <span class="text-muted">No roles assigned</span>
+   }
+       </p>
+         </div>
+
+     <form asp-action="AssignRole" method="post">
+    <input type="hidden" name="userId" value="@user?.Id" />
+       
+      <div class="mb-3">
+       <label for="roleName" class="form-label">Select Role to Assign</label>
+   <select name="roleName" id="roleName" class="form-select" required>
+       <option value="">-- Select a Role --</option>
+ @if (allRoles != null)
+    {
+     foreach (var role in allRoles)
+ {
+       <option value="@role">@role</option>
+     }
+       }
+     </select>
+    </div>
+
+      <div class="d-grid gap-2">
+     <button type="submit" class="btn btn-success">Assign Role</button>
+       <a asp-action="Users" class="btn btn-secondary">Back to Users</a>
+        </div>
+         </form>
+    </div>
+   </div>
+    </div>
+    </div>
+</div>

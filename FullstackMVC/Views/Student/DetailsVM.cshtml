@@ -1,0 +1,156 @@
+﻿@model FullstackMVC.ViewModels.StudentDetailsVM
+
+@{
+    ViewData["Title"] = "Student Details (ViewModel)";
+}
+
+<div class="container mt-4">
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> @Model.Message
+    </div>
+
+    <h1>Student Details <small class="text-muted">(Using ViewModel)</small></h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <div class="col-md-3">
+                        <img src="@Model.Image" alt="@Model.Name" class="img-fluid rounded shadow" />
+                    </div>
+                }
+                <div class="@(string.IsNullOrEmpty(Model.Image) ? "col-md-12" : "col-md-9")">
+                    <dl class="row">
+                        <dt class="col-sm-3">SSN</dt>
+                        <dd class="col-sm-9"><span class="badge bg-primary">@Model.SSN</span></dd>
+
+                        <dt class="col-sm-3">Name</dt>
+                        <dd class="col-sm-9"><strong>@Model.Name</strong></dd>
+
+                        <dt class="col-sm-3">Age</dt>
+                        <dd class="col-sm-9">@Model.Age years old</dd>
+
+                        <dt class="col-sm-3">Gender</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Gender == "Male")
+                            {
+                                <span class="badge bg-primary">@Model.Gender</span>
+                            }
+                            else if (Model.Gender == "Female")
+                            {
+                                <span class="badge bg-danger">@Model.Gender</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@Model.Gender</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Address</dt>
+                        <dd class="col-sm-9">@(Model.Address ?? "N/A")</dd>
+
+                        <dt class="col-sm-3">Department</dt>
+                        <dd class="col-sm-9"><span class="badge bg-info">@Model.DepartmentName</span></dd>
+
+                        <dt class="col-sm-3">Total Courses</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge bg-secondary">@Model.GradesCount courses</span>
+                        </dd>
+
+                        @if (Model.AverageGrade.HasValue)
+                        {
+                            <dt class="col-sm-3">Average Grade</dt>
+                            <dd class="col-sm-9">
+                                <span class="badge" style="background-color: @Model.PerformanceColor; font-size: 1.1em;">
+                                    @Model.AverageGrade.Value.ToString("F2")%
+                                </span>
+                                @if (Model.PerformanceColor == "green")
+                                {
+                                    <span class="ms-2 text-success"><i class="bi bi-trophy-fill"></i> Excellent</span>
+                                }
+                                else if (Model.PerformanceColor == "orange")
+                                {
+                                    <span class="ms-2 text-warning"><i class="bi bi-star-fill"></i> Good</span>
+                                }
+                                else if (Model.PerformanceColor == "red")
+                                {
+                                    <span class="ms-2 text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Needs Improvement</span>
+                                }
+                            </dd>
+                        }
+                    </dl>
+
+                    @if (Model.CourseGrades != null && Model.CourseGrades.Any())
+                    {
+                        <h4 class="mt-4 mb-3">
+                            <i class="bi bi-book-fill"></i> Courses & Performance
+                        </h4>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Grade</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var grade in Model.CourseGrades)
+                                    {
+                                        <tr>
+                                            <td>@grade.CourseName</td>
+                                            <td>
+                                                <strong style="color: @grade.GradeColor">
+                                                    @(grade.GradeValue?.ToString("F2") ?? "N/A")
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                @if (grade.GradeStatus == "Pass")
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle-fill"></i> @grade.GradeStatus
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">
+                                                        <i class="bi bi-x-circle-fill"></i> @grade.GradeStatus
+                                                    </span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning mt-4">
+                            <i class="bi bi-exclamation-triangle"></i> No grades available for this student.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-id="@Model.SSN" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+        <a asp-action="CoursesVM" asp-route-id="@Model.SSN" class="btn btn-info">
+            <i class="bi bi-journal-text"></i> View Courses
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.SSN" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Delete
+        </a>
+        <a asp-action="GetAllVM" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+        <a asp-action="Details" asp-route-id="@Model.SSN" class="btn btn-outline-info">
+            <i class="bi bi-eye"></i> View Regular Details
+        </a>
+    </div>
+</div>

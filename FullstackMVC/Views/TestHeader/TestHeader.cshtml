@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Test Custom Headers";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+ <div class="col-md-10">
+   <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+            <h2><i class="bi bi-gear"></i> Custom Header Test Result</h2>
+  </div>
+ <div class="card-body">
+          <div class="alert alert-info">
+    <h4><i class="bi bi-info-circle"></i> @ViewBag.Message</h4>
+  </div>
+
+      <div class="alert alert-success">
+    <h5>How to View Response Headers:</h5>
+     <ol>
+   <li><strong>Chrome/Edge DevTools:</strong> Press F12 → Network tab → Click on this request → Headers section</li>
+ <li><strong>Firefox:</strong> Press F12 → Network tab → Click on this request → Headers tab</li>
+        <li><strong>Postman:</strong> Send GET request → Check "Headers" in response section</li>
+     <li><strong>cURL:</strong> Use <code>curl -I @(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("WithDefaultHeader", "TestHeader")</code></li>
+  </ol>
+       </div>
+
+       <div class="card bg-light mb-4">
+        <div class="card-body">
+      <h5>Expected Headers:</h5>
+       <ul class="list-group">
+       <li class="list-group-item">
+          <strong>X-Action-Result-Key:</strong> ResultFilterApplied
+        <span class="badge bg-success float-end">From Result Filter</span>
+</li>
+ <li class="list-group-item">
+             <strong>X-Response-Time:</strong> [Current UTC timestamp]
+      <span class="badge bg-success float-end">From Result Filter</span>
+    </li>
+                </ul>
+    </div>
+       </div>
+
+      <div class="d-grid gap-2">
+     <a href="@Url.Action("WithDefaultHeader", "TestHeader")" class="btn btn-primary">
+  Test Default Header
+  </a>
+ <a href="@Url.Action("WithCustomHeader", "TestHeader")" class="btn btn-info">
+       Test Custom Header
+          </a>
+       <a href="@Url.Action("WithBonusHeader", "TestHeader")" class="btn btn-success">
+     Test Bonus Header
+ </a>
+<a href="@Url.Action("WithMultipleHeaders", "TestHeader")" class="btn btn-warning">
+            Test Multiple Headers
+ </a>
+       <a href="@Url.Action("ApiWithHeader", "TestHeader")" class="btn btn-secondary">
+          Test API with Header
+   </a>
+    <a href="@Url.Action("WithoutHeader", "TestHeader")" class="btn btn-outline-dark">
+ Test Without Header
+ </a>
+         <a href="@Url.Action("ViewHeaders", "TestHeader")" class="btn btn-dark">
+   View All Headers
+   </a>
+</div>
+
+ <div class="mt-4">
+          <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-house"></i> Back to Home
+   </a>
+  </div>
+    </div>
+   </div>
+
+  <div class="card shadow mt-4">
+       <div class="card-header bg-dark text-white">
+      <h4>Using JavaScript to View Headers (Limited)</h4>
+     </div>
+      <div class="card-body">
+    <p class="alert alert-warning">
+   <strong>Note:</strong> JavaScript cannot read custom headers directly from the current page.
+        You need to use browser DevTools or make an AJAX request.
+       </p>
+
+    <button id="fetchHeaders" class="btn btn-primary">
+       Fetch Headers via AJAX
+    </button>
+      
+     <div id="headerResult" class="mt-3"></div>
+          </div>
+         </div>
+     </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    document.getElementById('fetchHeaders').addEventListener('click', async function() {
+   const resultDiv = document.getElementById('headerResult');
+  resultDiv.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
+  
+        try {
+    const response = await fetch('@Url.Action("WithDefaultHeader", "TestHeader")');
+       
+          let headersHtml = '<div class="card"><div class="card-body">';
+        headersHtml += '<h5>Response Headers:</h5><ul class="list-group">';
+ 
+       // Iterate through headers
+  for (let [key, value] of response.headers.entries()) {
+   headersHtml += `<li class="list-group-item"><strong>${key}:</strong> ${value}</li>`;
+     }
+  
+            headersHtml += '</ul></div></div>';
+      resultDiv.innerHTML = headersHtml;
+        
+         } catch (error) {
+       resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+       }
+    });
+    </script>
+}

@@ -1,0 +1,544 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+  font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* ==================== UNIFIED COLOR SYSTEM ==================== */
+:root {
+    /* Primary Colors - University Theme */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+    --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    
+    /* Text Colors */
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --text-light: #ffffff;
+    
+    /* Background Colors */
+    --bg-light: #f8f9fa;
+    --bg-white: #ffffff;
+    --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    
+    /* Shadow Values */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+    --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+    
+    /* Border Radius */
+    --border-radius: 15px;
+    --border-radius-sm: 10px;
+    --border-radius-lg: 20px;
+    
+/* Transitions */
+    --transition: all 0.3s ease;
+    --transition-fast: all 0.2s ease;
+}
+
+/* ==================== GLOBAL COMPONENTS ==================== */
+.card {
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    border: none !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    background: var(--primary-gradient) !important;
+    color: var(--text-light) !important;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* ==================== BUTTONS ==================== */
+.btn {
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 500 !important;
+    transition: var(--transition);
+    padding: 0.75rem 1.5rem;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+}
+
+.btn-success {
+background: var(--success-gradient) !important;
+    border: none !important;
+}
+
+.btn-info {
+    background: var(--info-gradient) !important;
+    border: none !important;
+}
+
+.btn-warning {
+    background: var(--warning-gradient) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-secondary {
+    background: var(--secondary-gradient) !important;
+    border: none !important;
+}
+
+/* ==================== BADGES ==================== */
+.badge {
+ border-radius: 8px !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+.bg-primary {
+    background: var(--primary-gradient) !important;
+}
+
+.bg-success {
+    background: var(--success-gradient) !important;
+}
+
+.bg-info {
+    background: var(--info-gradient) !important;
+}
+
+.bg-warning {
+    background: var(--warning-gradient) !important;
+    color: white !important;
+}
+
+.bg-secondary {
+    background: var(--secondary-gradient) !important;
+}
+
+/* ==================== STATISTICS CARDS ==================== */
+.stats-card {
+    border: none;
+    border-radius: var(--border-radius);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow-lg);
+}
+
+.stats-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.stats-card.primary {
+    background: var(--primary-gradient);
+}
+
+.stats-card.success {
+    background: var(--success-gradient);
+}
+
+.stats-card.info {
+    background: var(--info-gradient);
+}
+
+.stats-card.warning {
+    background: var(--warning-gradient);
+}
+
+/* ==================== PROGRESS BARS ==================== */
+.progress {
+    border-radius: var(--border-radius-sm);
+    border: 1px solid #dee2e6;
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition);
+}
+
+.progress-bar.bg-success {
+    background: var(--success-gradient) !important;
+}
+
+.progress-bar.bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+}
+
+.progress-bar.bg-info {
+    background: var(--info-gradient) !important;
+}
+
+/* ==================== TABLES ==================== */
+.table {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    background: white;
+}
+
+.table thead {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+}
+
+.table th {
+    border: none !important;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.table td {
+    border: none !important;
+    border-bottom: 1px solid #f8f9fa !important;
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+}
+
+/* ==================== COURSE CARDS ==================== */
+.course-card {
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    transition: var(--transition);
+    overflow: hidden;
+    background: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.course-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.course-card .card-header {
+    background: var(--primary-gradient) !important;
+}
+
+/* ==================== QUICK ACTION CARDS ==================== */
+.quick-action-card {
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-10px) scale(1.05);
+}
+
+.quick-action-card.primary .card-body {
+    background: var(--primary-gradient);
+    color: white;
+    border-radius: var(--border-radius);
+}
+
+.quick-action-card.success .card-body {
+    background: var(--success-gradient);
+    color: white;
+    border-radius: var(--border-radius);
+}
+
+.quick-action-card.info .card-body {
+    background: var(--info-gradient);
+  color: white;
+border-radius: var(--border-radius);
+}
+
+.quick-action-card.warning .card-body {
+    background: var(--warning-gradient);
+    color: white;
+    border-radius: var(--border-radius);
+}
+
+/* ==================== GRADE INDICATORS ==================== */
+.grade-indicator {
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.grade-indicator.success {
+    background: linear-gradient(45deg, #e8f5e8, #c8e6c9);
+}
+
+.grade-indicator.warning {
+    background: linear-gradient(45deg, #fff3cd, #ffeaa7);
+}
+
+.grade-indicator.info {
+    background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+}
+
+/* ==================== Header Styles ==================== */
+.navbar-brand {
+    font-size: 1.3rem;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: white;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+ width: 80%;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius-sm);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+    transition: all 0.2s ease;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.dropdown-item:hover {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    transform: translateX(5px);
+}
+
+/* ==================== Footer Styles ==================== */
+.footer {
+    margin-top: auto;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    background: var(--primary-gradient);
+    color: white;
+}
+
+.footer h5 {
+  font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.footer h5::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(to right, #ffffff, transparent);
+}
+
+.footer a {
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer a:hover {
+    color: white !important;
+    padding-left: 5px;
+}
+
+.social-links a {
+ display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: translateY(-5px);
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+.shadow-hover:hover {
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.text-primary {
+    color: #667eea !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+  transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    .footer .col-md-6,
+    .footer .col-lg-4,
+    .footer .col-lg-3 {
+        text-align: center !important;
+      margin-bottom: 2rem;
+    }
+ 
+    .footer h5::after {
+    left: 50%;
+transform: translateX(-50%);
+    }
+    
+    .social-links {
+    justify-content: center;
+  display: flex;
+    }
+    
+    .card-body {
+     padding: 1rem;
+    }
+    
+    .quick-action-card:hover {
+     transform: translateY(-5px) scale(1.02);
+    }
+}
+
+/* ==================== CUSTOM SCROLLBAR ==================== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+/* ==================== ANIMATION UTILITIES ==================== */
+.course-row {
+    transition: var(--transition-fast);
+}
+
+.course-row:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ==================== PROFILE STYLES ==================== */
+.profile-info div {
+    transition: var(--transition-fast);
+}
+
+.profile-info div:hover {
+    transform: translateX(5px);
+    background: #e9ecef !important;
+}

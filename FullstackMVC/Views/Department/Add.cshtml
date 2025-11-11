@@ -1,0 +1,81 @@
+﻿@model Department
+
+@{
+    ViewData["Title"] = "Add Department";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+    <div class="card shadow">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0">
+     <i class="bi bi-building"></i> Add New Department
+          </h3>
+     </div>
+   <div class="card-body">
+        <form asp-action="Add" method="post">
+         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+  <!-- Department Name -->
+ <div class="mb-3">
+     <label asp-for="Name" class="form-label">
+     <i class="bi bi-tag"></i> Department Name <span class="text-danger">*</span>
+      </label>
+   <input asp-for="Name" class="form-control" placeholder="Enter department name" required />
+  <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+ <!-- Manager Name -->
+  <div class="mb-3">
+         <label asp-for="MangerName" class="form-label">
+         <i class="bi bi-person"></i> Manager Name
+          </label>
+<input asp-for="MangerName" class="form-control" placeholder="Enter manager name" />
+    <span asp-validation-for="MangerName" class="text-danger"></span>
+        </div>
+
+   <!-- Location -->
+  <div class="mb-3">
+      <label asp-for="Location" class="form-label">
+   <i class="bi bi-geo-alt"></i> Location
+                 </label>
+        <select asp-for="Location" class="form-select">
+          <option value="">-- Select Location --</option>
+     <option value="Smart">Smart</option>
+  <option value="Fayoum">Fayoum</option>
+            <option value="Cairo">Cairo</option>
+               <option value="Giza">Giza</option>
+          <option value="Alexandria">Alexandria</option>
+   </select>
+       <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+
+         <!-- PC Numbers -->
+    <div class="mb-3">
+ <label asp-for="PcNumbers" class="form-label">
+      <i class="bi bi-pc-display"></i> Number of PCs
+        </label>
+     <input asp-for="PcNumbers" class="form-control" type="number" min="0" placeholder="Enter number of PCs" />
+     <span asp-validation-for="PcNumbers" class="text-danger"></span>
+    </div>
+
+       <!-- Submit Buttons -->
+   <div class="d-flex justify-content-between mt-4">
+         <a asp-action="GetAll" class="btn btn-secondary">
+         <i class="bi bi-arrow-left"></i> Cancel
+        </a>
+  <button type="submit" class="btn btn-success">
+         <i class="bi bi-check-circle"></i> Add Department
+ </button>
+          </div>
+          </form>
+   </div>
+ </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

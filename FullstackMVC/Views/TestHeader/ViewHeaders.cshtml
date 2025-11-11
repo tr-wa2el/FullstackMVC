@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "View Response Headers";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+ <div class="col-md-10">
+       <div class="card shadow-lg">
+     <div class="card-header bg-dark text-white">
+    <h2><i class="bi bi-list-check"></i> Response Headers Viewer</h2>
+    </div>
+      <div class="card-body">
+    <div class="alert alert-info">
+        <h4><i class="bi bi-info-circle"></i> How to View Headers</h4>
+        <p>Use your browser's Developer Tools to inspect response headers:</p>
+ </div>
+
+          <div class="row">
+     <div class="col-md-6">
+  <div class="card bg-light mb-3">
+        <div class="card-header">
+  <h5>Chrome / Edge</h5>
+        </div>
+        <div class="card-body">
+     <ol>
+  <li>Press <kbd>F12</kbd> or <kbd>Ctrl+Shift+I</kbd></li>
+   <li>Click <strong>Network</strong> tab</li>
+       <li>Refresh the page (<kbd>F5</kbd>)</li>
+       <li>Click on the request (ViewHeaders)</li>
+    <li>Click <strong>Headers</strong> section</li>
+     <li>Scroll to <strong>Response Headers</strong></li>
+       </ol>
+ </div>
+         </div>
+   </div>
+
+      <div class="col-md-6">
+  <div class="card bg-light mb-3">
+    <div class="card-header">
+     <h5>Firefox</h5>
+    </div>
+     <div class="card-body">
+     <ol>
+         <li>Press <kbd>F12</kbd></li>
+    <li>Click <strong>Network</strong> tab</li>
+   <li>Refresh the page (<kbd>F5</kbd>)</li>
+  <li>Click on the request</li>
+       <li>Click <strong>Headers</strong> tab</li>
+   <li>View <strong>Response Headers</strong></li>
+       </ol>
+     </div>
+     </div>
+   </div>
+       </div>
+
+           <div class="card border-success mb-4">
+    <div class="card-header bg-success text-white">
+       <h5>Expected Custom Headers</h5>
+  </div>
+   <div class="card-body">
+   <table class="table table-striped">
+    <thead>
+<tr>
+     <th>Header Name</th>
+     <th>Expected Value</th>
+          <th>Source</th>
+       </tr>
+ </thead>
+   <tbody>
+  <tr>
+  <td><code>X-Demo-Header</code></td>
+       <td><code>DemoValue</code></td>
+      <td><span class="badge bg-primary">Result Filter</span></td>
+ </tr>
+        <tr>
+  <td><code>X-Response-Time</code></td>
+        <td><code>[UTC Timestamp]</code></td>
+  <td><span class="badge bg-primary">Result Filter</span></td>
+    </tr>
+ <tr>
+    <td><code>X-Controller-Name</code></td>
+        <td><code>TestHeaderController</code></td>
+       <td><span class="badge bg-info">Manual</span></td>
+       </tr>
+    <tr>
+<td><code>X-Action-Name</code></td>
+       <td><code>ViewHeaders</code></td>
+    <td><span class="badge bg-info">Manual</span></td>
+      </tr>
+      </tbody>
+       </table>
+   </div>
+      </div>
+
+    <div class="card border-primary mb-4">
+      <div class="card-header bg-primary text-white">
+       <h5>Test with cURL</h5>
+   </div>
+      <div class="card-body">
+         <p>Copy and run this command in your terminal:</p>
+         <div class="bg-dark text-light p-3 rounded">
+    <code>curl -I @(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("ViewHeaders", "TestHeader")</code>
+        </div>
+    <p class="mt-2 text-muted">This will show only the response headers without the body.</p>
+  </div>
+      </div>
+
+      <div class="card border-warning mb-4">
+       <div class="card-header bg-warning">
+  <h5>Test with PowerShell</h5>
+      </div>
+    <div class="card-body">
+ <p>Copy and run this command in PowerShell:</p>
+    <div class="bg-dark text-light p-3 rounded">
+ <code>Invoke-WebRequest -Uri "@(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("ViewHeaders", "TestHeader")" -Method GET | Select-Object -ExpandProperty Headers</code>
+       </div>
+ </div>
+         </div>
+
+   <div class="card border-info">
+<div class="card-header bg-info text-white">
+       <h5>Fetch Headers with JavaScript</h5>
+     </div>
+     <div class="card-body">
+      <button id="fetchBtn" class="btn btn-primary">
+    <i class="bi bi-download"></i> Fetch Headers Now
+   </button>
+<div id="result" class="mt-3"></div>
+    </div>
+        </div>
+
+       <div class="mt-4">
+      <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+       <i class="bi bi-house"></i> Back to Home
+   </a>
+   <a asp-action="WithDefaultHeader" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-repeat"></i> Try Other Tests
+   </a>
+ </div>
+   </div>
+  </div>
+    </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+   document.getElementById('fetchBtn').addEventListener('click', async function() {
+          const btn = this;
+   const resultDiv = document.getElementById('result');
+  
+     btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...';
+        
+   try {
+    const response = await fetch('@Url.Action("ViewHeaders", "TestHeader")');
+    
+   let html = '<div class="card mt-3"><div class="card-header bg-success text-white"><h6>Response Headers</h6></div>';
+        html += '<div class="card-body"><table class="table table-sm table-striped"><thead><tr><th>Header</th><th>Value</th></tr></thead><tbody>';
+
+      for (let [key, value] of response.headers.entries()) {
+       const badgeClass = key.startsWith('x-') ? 'bg-primary' : 'bg-secondary';
+    html += `<tr><td><span class="badge ${badgeClass}">${key}</span></td><td><code>${value}</code></td></tr>`;
+       }
+      
+   html += '</tbody></table></div></div>';
+       resultDiv.innerHTML = html;
+ 
+  } catch (error) {
+       resultDiv.innerHTML = `<div class="alert alert-danger mt-3"><strong>Error:</strong> ${error.message}</div>`;
+  } finally {
+ btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-download"></i> Fetch Headers Now';
+ }
+ });
+    </script>
+}

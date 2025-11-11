@@ -1,0 +1,206 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="jumbotron bg-primary text-white p-5 rounded shadow-lg fade-in">
+            <h1 class="display-4">
+                <i class="bi bi-mortarboard-fill"></i> Welcome to FullstackMVC
+            </h1>
+            <p class="lead">A comprehensive Student Management System built with ASP.NET Core 9, Entity Framework, and Bootstrap 5</p>
+            <hr class="my-4 bg-white">
+            <p>Manage students, departments, courses, and grades efficiently with our modern web application.</p>
+            <div class="mt-4">
+                <a class="btn btn-light btn-lg me-2" asp-controller="Student" asp-action="GetAllVM" role="button">
+                    <i class="bi bi-people"></i> View Students
+                </a>
+                <a class="btn btn-outline-light btn-lg" asp-controller="Department" asp-action="GetAll" role="button">
+                    <i class="bi bi-building"></i> View Departments
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Cards -->
+<div class="row mb-5">
+    <div class="col-12 text-center mb-4">
+        <h2 class="display-6">Key Features</h2>
+        <p class="text-muted">Everything you need to manage your educational institution</p>
+    </div>
+
+    <!-- Student Management -->
+    <div class="col-lg-4 col-md-6 mb-4 slide-in">
+        <div class="card h-100 text-center shadow">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="card-title">Student Management</h5>
+                <p class="card-text">
+                    Add, edit, and manage student records with detailed profiles, grades, and course enrollments.
+                </p>
+                <a asp-controller="Student" asp-action="GetAllVM" class="btn btn-primary">
+                    <i class="bi bi-arrow-right-circle"></i> Manage Students
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department Management -->
+    <div class="col-lg-4 col-md-6 mb-4 slide-in">
+        <div class="card h-100 text-center shadow">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="bi bi-building text-success" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="card-title">Department Management</h5>
+                <p class="card-text">
+                    Organize students and faculty by departments, track resources, and manage organizational structure.
+                </p>
+                <a asp-controller="Department" asp-action="GetAll" class="btn btn-success">
+                    <i class="bi bi-arrow-right-circle"></i> View Departments
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grade Tracking -->
+    <div class="col-lg-4 col-md-6 mb-4 slide-in">
+        <div class="card h-100 text-center shadow">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="bi bi-graph-up text-info" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="card-title">Performance Analytics</h5>
+                <p class="card-text">
+                    Track student performance, view grades, analyze course completion rates, and generate reports.
+                </p>
+                <a asp-controller="Student" asp-action="GetAllVM" class="btn btn-info">
+                    <i class="bi bi-arrow-right-circle"></i> View Analytics
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Management -->
+    <div class="col-lg-4 col-md-6 mb-4 slide-in">
+        <div class="card h-100 text-center shadow">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="bi bi-journal-text text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="card-title">Course Management</h5>
+                <p class="card-text">
+                    Create and manage courses, assign instructors, set grade criteria, and track enrollments.
+                </p>
+                <a href="#" class="btn btn-warning">
+                    <i class="bi bi-arrow-right-circle"></i> Manage Courses
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reporting -->
+    <div class="col-lg-4 col-md-6 mb-4 slide-in">
+        <div class="card h-100 text-center shadow">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="bi bi-file-earmark-bar-graph text-danger" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="card-title">Reports & Insights</h5>
+                <p class="card-text">
+                    Generate comprehensive reports, export data, and gain insights into academic performance.
+                </p>
+                <a href="#" class="btn btn-danger">
+                    <i class="bi bi-arrow-right-circle"></i> View Reports
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Management -->
+    <div class="col-lg-4 col-md-6 mb-4 slide-in">
+        <div class="card h-100 text-center shadow">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="bi bi-shield-lock text-secondary" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="card-title">Security & Access</h5>
+                <p class="card-text">
+                    Secure role-based access control, user authentication, and data protection mechanisms.
+                </p>
+                <a href="#" class="btn btn-secondary">
+                    <i class="bi bi-arrow-right-circle"></i> Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="row mb-5">
+    <div class="col-12 text-center mb-4">
+        <h2 class="display-6">System Statistics</h2>
+        <p class="text-muted">Quick overview of the system</p>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-people-fill" style="font-size: 2.5rem;"></i>
+                <h3 class="mt-2">@ViewBag.StudentCount ?? "8"</h3>
+                <p class="mb-0">Total Students</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-building" style="font-size: 2.5rem;"></i>
+                <h3 class="mt-2">@ViewBag.DepartmentCount ?? "3"</h3>
+                <p class="mb-0">Departments</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-info text-white shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-journal-text" style="font-size: 2.5rem;"></i>
+                <h3 class="mt-2">@ViewBag.CourseCount ?? "5"</h3>
+                <p class="mb-0">Active Courses</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-warning text-white shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-person-badge" style="font-size: 2.5rem;"></i>
+                <h3 class="mt-2">@ViewBag.InstructorCount ?? "4"</h3>
+                <p class="mb-0">Instructors</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+               // Add smooth animation on scroll
+         const observer = new IntersectionObserver((entries) => {
+         entries.forEach(entry => {
+          if (entry.isIntersecting) {
+               entry.target.classList.add('slide-in');
+                 }
+           });
+          });
+
+               document.querySelectorAll('.card').forEach((card) => {
+                   observer.observe(card);
+        });
+    </script>
+}

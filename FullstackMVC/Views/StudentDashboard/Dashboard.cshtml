@@ -1,0 +1,301 @@
+﻿@model FullstackMVC.Models.Student
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+<div class="col-12">
+  <h1 class="mb-4 text-dark">
+  <i class="bi bi-person-circle text-primary"></i> <strong>Welcome back, @Model.Name!</strong>
+      <small class="d-block text-muted fs-6 mt-2">Student ID: @Model.SSN | Department: @Model.Department?.Name</small>
+ </h1>
+   </div>
+  </div>
+
+    <!-- Unified Student Info Card -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+    <h5 class="mb-0"><i class="bi bi-person-badge-fill"></i> Your Profile</h5>
+ </div>
+   <div class="card-body">
+    @if (!string.IsNullOrEmpty(Model.Image))
+  {
+       <div class="text-center mb-3">
+      <img src="@Model.Image" alt="Profile" class="rounded-circle border shadow" style="width: 80px; height: 80px; object-fit: cover;" />
+    </div>
+ }
+         <div class="profile-info">
+    <div class="mb-3 grade-indicator info">
+     <strong class="text-primary">SSN:</strong> <span class="float-end fw-bold">#@Model.SSN</span>
+      </div>
+    <div class="mb-3 grade-indicator success">
+      <strong class="text-success">Age:</strong> <span class="float-end fw-bold">@Model.Age years</span>
+    </div>
+        <div class="mb-3 grade-indicator info">
+       <strong class="text-info">Gender:</strong> <span class="float-end fw-bold">@Model.Gender</span>
+    </div>
+         <div class="mb-3 grade-indicator warning">
+     <strong class="text-warning">Address:</strong> <span class="float-end fw-bold">@Model.Address</span>
+  </div>
+   <div class="mb-3 grade-indicator success">
+     <strong class="text-dark">Department:</strong> <span class="float-end fw-bold">@Model.Department?.Name</span>
+    </div>
+   </div>
+ <a asp-action="EditProfile" class="btn btn-primary w-100 mt-3">
+ <i class="bi bi-pencil-fill"></i> Edit Profile
+</a>
+   </div>
+</div>
+     </div>
+
+      <div class="col-md-8">
+    <div class="card">
+     <div class="card-header bg-success">
+      <h5 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Academic Performance Overview</h5>
+   </div>
+<div class="card-body">
+ @if (Model.Grades != null && Model.Grades.Any())
+  {
+ var totalGrades = Model.Grades.Sum(g => g.GradeValue);
+         var avgGrade = Model.Grades.Average(g => g.GradeValue);
+  var passedCourses = Model.Grades.Count(g => g.GradeValue >= g.Course.MinDegree);
+    var successRate = ((double)passedCourses / Model.Grades.Count()) * 100;
+    
+ <div class="row text-center g-3">
+     <div class="col-md-3">
+      <div class="grade-indicator info">
+        <h2 class="text-primary fw-bold mb-1">@Model.Grades.Count()</h2>
+ <p class="mb-0 text-muted fw-semibold">Enrolled Courses</p>
+      </div>
+   </div>
+     <div class="col-md-3">
+  <div class="grade-indicator success">
+ <h2 class="text-success fw-bold mb-1">@string.Format("{0:F1}", avgGrade)</h2>
+  <p class="mb-0 text-muted fw-semibold">Average Grade</p>
+       </div>
+      </div>
+  <div class="col-md-3">
+   <div class="grade-indicator warning">
+ <h2 class="text-warning fw-bold mb-1">@passedCourses</h2>
+  <p class="mb-0 text-muted fw-semibold">Passed Courses</p>
+    </div>
+  </div>
+        <div class="col-md-3">
+     <div class="grade-indicator success">
+  <h2 class="text-success fw-bold mb-1">@string.Format("{0:F1}%", successRate)</h2>
+  <p class="mb-0 text-muted fw-semibold">Success Rate</p>
+        </div>
+     </div>
+    </div>
+    
+    <!-- Progress bar for overall performance -->
+    <div class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+     <span class="fw-bold">Overall Progress</span>
+      <span class="badge bg-primary">@string.Format("{0:F1}%", successRate)</span>
+      </div>
+      <div class="progress" style="height: 15px;">
+        <div class="progress-bar bg-success" style="width: @successRate%;" 
+       role="progressbar" aria-valuenow="@successRate" aria-valuemin="0" aria-valuemax="100">
+    </div>
+   </div>
+    </div>
+   }
+     else
+   {
+     <div class="text-center py-4">
+     <i class="bi bi-graph-up text-muted" style="font-size: 4rem;"></i>
+      <h5 class="text-muted mt-3">No Academic Records Yet</h5>
+ <p class="text-muted">Start enrolling in courses to track your progress.</p>
+     </div>
+   }
+    </div>
+  </div>
+        </div>
+    </div>
+
+    <!-- Unified Quick Links -->
+    <div class="row g-4 mb-4">
+   <div class="col-md-3">
+      <div class="card quick-action-card primary h-100">
+    <div class="card-body text-center p-4">
+ <i class="bi bi-book-fill" style="font-size: 3.5rem; opacity: 0.9;"></i>
+    <h5 class="mt-3 fw-bold">My Courses</h5>
+ <p class="mb-3">View enrolled courses and grades</p>
+    <a asp-action="MyCourses" class="btn btn-light btn-lg">
+    <i class="bi bi-arrow-right"></i> View Courses
+    </a>
+  </div>
+     </div>
+        </div>
+
+     <div class="col-md-3">
+  <div class="card quick-action-card success h-100">
+<div class="card-body text-center p-4">
+  <i class="bi bi-collection-fill" style="font-size: 3.5rem; opacity: 0.9;"></i>
+          <h5 class="mt-3 fw-bold">All Courses</h5>
+   <p class="mb-3">Explore available courses</p>
+     <a asp-action="AllCourses" class="btn btn-light btn-lg">
+  <i class="bi bi-search"></i> Browse All
+     </a>
+   </div>
+    </div>
+        </div>
+
+   <div class="col-md-3">
+    <div class="card quick-action-card info h-100">
+   <div class="card-body text-center p-4">
+  <i class="bi bi-building-fill" style="font-size: 3.5rem; opacity: 0.9;"></i>
+<h5 class="mt-3 fw-bold">Departments</h5>
+     <p class="mb-3">View departments info</p>
+<a asp-action="Departments" class="btn btn-light btn-lg">
+        <i class="bi bi-building"></i> View Depts
+      </a>
+ </div>
+    </div>
+</div>
+
+ <div class="col-md-3">
+  <div class="card quick-action-card warning h-100">
+  <div class="card-body text-center p-4">
+   <i class="bi bi-person-circle" style="font-size: 3.5rem; opacity: 0.9;"></i>
+<h5 class="mt-3 fw-bold">My Profile</h5>
+    <p class="mb-3">Update your information</p>
+ <a asp-action="EditProfile" class="btn btn-light btn-lg">
+   <i class="bi bi-pencil"></i> Edit Profile
+     </a>
+   </div>
+  </div>
+        </div>
+    </div>
+
+    <!-- Unified Recent Grades -->
+ @if (Model.Grades != null && Model.Grades.Any())
+ {
+ <div class="row">
+    <div class="col-12">
+ <div class="card">
+    <div class="card-header">
+  <h5 class="mb-0"><i class="bi bi-list-check"></i> Recent Academic Performance</h5>
+  </div>
+ <div class="card-body">
+<div class="table-responsive">
+  <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+    <th class="p-3">Course</th>
+   <th class="p-3">Grade</th>
+ <th class="p-3">Max Degree</th>
+     <th class="p-3">Min Degree</th>
+   <th class="p-3">Status</th>
+    <th class="p-3">Performance</th>
+  </tr>
+       </thead>
+ <tbody>
+ @foreach (var grade in Model.Grades.Take(5))
+    {
+     var percentage = (grade.GradeValue / grade.Course.Degree) * 100;
+      var isPassed = grade.GradeValue >= grade.Course.MinDegree;
+         
+     <tr class="course-row" style="border-left: 4px solid @(isPassed ? "#56ab2f" : "#f093fb");">
+   <td class="p-3">
+    <div class="fw-bold text-dark">@grade.Course?.Name</div>
+   <small class="text-muted">Course #@grade.Course?.Num</small>
+    </td>
+   <td class="p-3">
+<span class="badge @(isPassed ? "bg-success" : "bg-danger") fs-6 px-3 py-2">
+      @grade.GradeValue
+     </span>
+        </td>
+  <td class="p-3"><span class="badge bg-info px-3 py-2">@grade.Course?.Degree</span></td>
+       <td class="p-3"><span class="badge bg-warning px-3 py-2">@grade.Course?.MinDegree</span></td>
+   <td class="p-3">
+     @if (isPassed)
+       {
+      <span class="badge bg-success px-3 py-2">
+     <i class="bi bi-check-circle"></i> Passed
+  </span>
+   }
+         else
+        {
+    <span class="badge bg-danger px-3 py-2">
+      <i class="bi bi-x-circle"></i> Failed
+  </span>
+   }
+   </td>
+   <td class="p-3">
+     <div class="d-flex align-items-center">
+    <div class="progress me-2" style="height: 20px; width: 100px;">
+   <div class="progress-bar @(isPassed ? "bg-success" : "bg-danger")" 
+style="width: @percentage%;" 
+     role="progressbar" aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+         </div>
+     </div>
+       <span class="fw-bold @(isPassed ? "text-success" : "text-danger") small">
+    @string.Format("{0:F1}%", percentage)
+    </span>
+     </div>
+   </td>
+     </tr>
+       }
+  </tbody>
+       </table>
+ </div>
+   <div class="text-center mt-4">
+     <a asp-action="MyCourses" class="btn btn-primary btn-lg">
+    <i class="bi bi-list-check"></i> View All Grades & Performance
+     </a>
+   </div>
+     </div>
+</div>
+  </div>
+  </div>
+  }
+</div>
+
+<style>
+.quick-action-card {
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+
+.quick-action-card:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+.card {
+  border-radius: 15px !important;
+}
+
+.btn {
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+}
+
+.profile-info div {
+  transition: all 0.2s ease;
+}
+
+.profile-info div:hover {
+  transform: translateX(5px);
+  background: #e9ecef !important;
+}
+
+.table td, .table th {
+  border: none !important;
+  border-bottom: 1px solid #f8f9fa !important;
+}
+
+.progress {
+  border: 1px solid #dee2e6;
+}
+
+.badge {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+}
+</style>

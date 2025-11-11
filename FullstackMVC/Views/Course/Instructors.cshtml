@@ -1,0 +1,112 @@
+﻿@model FullstackMVC.Models.Course
+
+@{
+    ViewData["Title"] = $"Instructors for {Model.Name}";
+}
+
+<div class="container-fluid mt-4">
+    <!-- Course Header -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-info text-white">
+   <h3 class="mb-0">
+       <i class="bi bi-person-badge"></i> 
+    Instructors Teaching: <strong>@Model.Name</strong>
+   </h3>
+  </div>
+  <div class="card-body">
+     <div class="row">
+    <div class="col-md-3">
+<strong>Course Number:</strong> <span class="badge bg-secondary">@Model.Num</span>
+       </div>
+  <div class="col-md-3">
+        <strong>Topic:</strong> <span class="badge bg-info">@(Model.Topic ?? "N/A")</span>
+    </div>
+    <div class="col-md-3">
+    <strong>Max Degree:</strong> <span class="badge bg-success">@Model.Degree</span>
+       </div>
+     <div class="col-md-3">
+<strong>Min Degree:</strong> <span class="badge bg-warning text-dark">@Model.MinDegree</span>
+   </div>
+  </div>
+     </div>
+    </div>
+
+    <!-- Instructors List -->
+    @if (Model.Instructors != null && Model.Instructors.Any())
+    {
+   <div class="row mb-4">
+    <div class="col-12">
+      <div class="card bg-info text-white shadow text-center">
+      <div class="card-body">
+     <h6 class="text-uppercase">Total Instructors</h6>
+    <h2>@Model.Instructors.Count</h2>
+      </div>
+       </div>
+   </div>
+        </div>
+
+  <div class="row">
+ @foreach (var instructor in Model.Instructors)
+       {
+     <div class="col-md-6 col-lg-4 mb-4">
+       <div class="card shadow h-100">
+     <div class="card-header bg-info text-white">
+   <h5 class="mb-0">
+    <i class="bi bi-person-circle"></i> @instructor.Name
+  </h5>
+     </div>
+    <div class="card-body">
+       <dl class="mb-0">
+        <dt>Employee ID</dt>
+      <dd><span class="badge bg-secondary">@instructor.Id</span></dd>
+
+      <dt>Department</dt>
+     <dd>
+      @if (instructor.Department != null)
+    {
+   <span class="badge bg-primary">@instructor.Department.Name</span>
+   }
+ else
+       {
+       <span class="text-muted">No Department</span>
+      }
+      </dd>
+
+       <dt>Age</dt>
+       <dd>@instructor.Age years old</dd>
+
+        <dt>Degree</dt>
+        <dd><span class="badge bg-warning text-dark">@(instructor.Degree ?? "N/A")</span></dd>
+
+     <dt>Salary</dt>
+  <dd><strong>@instructor.Salary.ToString("C")</strong></dd>
+
+    @if (!string.IsNullOrEmpty(instructor.Address))
+  {
+       <dt>Address</dt>
+        <dd>@instructor.Address</dd>
+ }
+   </dl>
+   </div>
+ </div>
+  </div>
+    }
+   </div>
+    }
+    else
+  {
+   <div class="alert alert-warning">
+     <i class="bi bi-exclamation-triangle"></i> No instructors are currently assigned to teach this course.
+     </div>
+    }
+
+    <!-- Back Button -->
+    <div class="mt-4">
+ <a asp-action="Details" asp-route-id="@Model.Num" class="btn btn-primary">
+      <i class="bi bi-eye"></i> View Course Details
+ </a>
+        <a asp-action="GetAll" class="btn btn-secondary">
+       <i class="bi bi-arrow-left"></i> Back to Courses
+   </a>
+    </div>
+</div>

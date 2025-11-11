@@ -1,0 +1,100 @@
+﻿@model FullstackMVC.Models.Student
+
+@{
+    ViewData["Title"] = "Add Student";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Student</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Add" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- SSN -->
+                        <div class="mb-3">
+                            <label asp-for="SSN" class="form-label"></label>
+                            <input asp-for="SSN" class="form-control" type="number" placeholder="Enter positive number" />
+                            <span asp-validation-for="SSN" class="text-danger"></span>
+                            <small class="form-text text-muted">Student Social Security Number (must be positive)</small>
+                        </div>
+
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter student name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <small class="form-text text-muted">Name must be 2-100 characters, letters and spaces only</small>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="mb-3">
+                            <label asp-for="Age" class="form-label"></label>
+                            <input asp-for="Age" class="form-control" type="number" min="16" max="100" placeholder="Enter age (16-100)" />
+                            <span asp-validation-for="Age" class="text-danger"></span>
+                            <small class="form-text text-muted">Age must be between 16 and 100</small>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="mb-3">
+                            <label asp-for="Gender" class="form-label"></label>
+                            <select asp-for="Gender" class="form-control">
+                                <option value="">-- Select Gender --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                            <small class="form-text text-muted">Gender is required</small>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" placeholder="Enter address (optional)" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                            <small class="form-text text-muted">Maximum 200 characters (optional)</small>
+                        </div>
+
+                        <!-- Image URL -->
+                        <div class="mb-3">
+                            <label asp-for="Image" class="form-label"></label>
+                            <input asp-for="Image" class="form-control" type="url" placeholder="https://example.com/image.jpg" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                            <small class="form-text text-muted">Enter a valid image URL (optional)</small>
+                        </div>
+
+                        <!-- Department -->
+                        <div class="mb-3">
+                            <label asp-for="DeptId" class="form-label">Department</label>
+                            <select asp-for="DeptId" class="form-control" asp-items="ViewBag.Departments">
+                                <option value="">-- Select Department --</option>
+                            </select>
+                            <span asp-validation-for="DeptId" class="text-danger"></span>
+                            <small class="form-text text-muted">Select student's department (optional)</small>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="GetAll" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-save"></i> Create Student
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

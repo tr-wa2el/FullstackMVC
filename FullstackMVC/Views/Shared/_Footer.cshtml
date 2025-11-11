@@ -1,0 +1,154 @@
+﻿<footer class="footer bg-dark text-white mt-5">
+    <!-- Main Footer Content -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5 class="text-uppercase mb-3">
+                    <i class="bi bi-building"></i> FullstackMVC
+                </h5>
+                <p class="text-white-50">
+                    A comprehensive student management system built with ASP.NET Core MVC, Entity Framework, and Bootstrap 5.
+                </p>
+                <div class="social-links mt-3">
+                    <a href="#" class="text-white me-3" title="Facebook">
+                        <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
+                    </a>
+                    <a href="#" class="text-white me-3" title="Twitter">
+                        <i class="bi bi-twitter" style="font-size: 1.5rem;"></i>
+                    </a>
+                    <a href="#" class="text-white me-3" title="LinkedIn">
+                        <i class="bi bi-linkedin" style="font-size: 1.5rem;"></i>
+                    </a>
+                    <a href="#" class="text-white" title="GitHub">
+                        <i class="bi bi-github" style="font-size: 1.5rem;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="text-uppercase mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a asp-controller="Home" asp-action="Index" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-chevron-right"></i> Home
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a asp-controller="Student" asp-action="GetAll" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-chevron-right"></i> Students
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a asp-controller="Department" asp-action="GetAll" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-chevron-right"></i> Departments
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a asp-controller="Home" asp-action="Privacy" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-chevron-right"></i> Privacy Policy
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Resources -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="text-uppercase mb-3">Resources</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="#" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-book"></i> Documentation
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-question-circle"></i> Help Center
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-bug"></i> Report Issue
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-white-50 text-decoration-none">
+                            <i class="bi bi-envelope"></i> Contact Us
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="text-uppercase mb-3">Contact</h5>
+                <ul class="list-unstyled text-white-50">
+                    <li class="mb-2">
+                        <i class="bi bi-geo-alt"></i>
+                        123 Education Street<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cairo, Egypt
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-telephone"></i>
+                        <a href="tel:+201011757497" class="text-white-50 text-decoration-none">
+                            +201011757497
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-envelope"></i>
+                        <a href="mailto:eng.wael.abosamra@gmail.com" class="text-white-50 text-decoration-none">
+                            eng.wael.abosamra@gmail.com
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-clock"></i>
+                        Mon - Fri: 9:00 AM - 6:00 PM
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="border-top border-secondary py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    <p class="mb-0 text-white-50">
+                        &copy; @DateTime.Now.Year <strong>ITI</strong>. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <span class="text-white-50">
+                        Made By:  Wael AboSamra  - using
+                        <strong>ASP.NET Core</strong> & <strong>Bootstrap 5</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button onclick="scrollToTop()" id="scrollTopBtn" class="btn btn-primary rounded-circle"
+            style="position: fixed; bottom: 20px; right: 20px; display: none; width: 50px; height: 50px; z-index: 1000;"
+            title="Go to top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+</footer>
+
+<script>
+      // Scroll to Top functionality
+      window.onscroll = function() {
+          const scrollTopBtn = document.getElementById("scrollTopBtn");
+          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+          scrollTopBtn.style.display = "block";
+     } else {
+    scrollTopBtn.style.display = "none";
+       }
+      };
+
+      function scrollToTop() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+</script>

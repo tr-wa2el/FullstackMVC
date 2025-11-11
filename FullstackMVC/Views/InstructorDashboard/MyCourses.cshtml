@@ -1,0 +1,204 @@
+﻿@model IEnumerable<FullstackMVC.Models.Course>
+
+@{
+  ViewData["Title"] = "My Courses";
+}
+
+<div class="container-fluid mt-4">
+  <div class="row">
+      <div class="col-12">
+  <h1 class="mb-4">
+       <i class="bi bi-book-half"></i> My Teaching Courses
+    </h1>
+     </div>
+  </div>
+
+  @if (Model != null && Model.Any())
+    {
+        <!-- Teaching Statistics -->
+   <div class="row g-4 mb-4">
+     <div class="col-md-4">
+     <div class="card bg-primary text-white shadow">
+  <div class="card-body text-center">
+    <i class="bi bi-book-half" style="font-size: 3rem; opacity: 0.7;"></i>
+       <h3 class="mt-2">@Model.Count()</h3>
+    <p class="mb-0">Courses Teaching</p>
+   </div>
+      </div>
+ </div>
+      <div class="col-md-4">
+    <div class="card bg-success text-white shadow">
+         <div class="card-body text-center">
+   <i class="bi bi-people-fill" style="font-size: 3rem; opacity: 0.7;"></i>
+  <h3 class="mt-2">@Model.SelectMany(c => c.Grades ?? new List<FullstackMVC.Models.Grade>()).Select(g => g.StudentSSN).Distinct().Count()</h3>
+     <p class="mb-0">Total Students</p>
+ </div>
+       </div>
+  </div>
+   <div class="col-md-4">
+    <div class="card bg-info text-white shadow">
+     <div class="card-body text-center">
+    <i class="bi bi-graph-up" style="font-size: 3rem; opacity: 0.7;"></i>
+       <h3 class="mt-2">@string.Format("{0:F1}", Model.Average(c => c.Degree))</h3>
+        <p class="mb-0">Avg Max Grade</p>
+      </div>
+   </div>
+        </div>
+    </div>
+
+  <!-- Courses Management -->
+        <div class="row">
+      <div class="col-12">
+   <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+     <h4 class="mb-0">
+       <i class="bi bi-list-ul"></i> Course Management
+       </h4>
+   </div>
+      <div class="card-body">
+     <div class="table-responsive">
+      <table class="table table-hover">
+    <thead class="table-dark">
+  <tr>
+        <th>Course Code</th>
+      <th>Course Name</th>
+      <th>Topic</th>
+     <th>Department</th>
+       <th>Max Grade</th>
+    <th>Min Grade</th>
+     <th>Enrolled Students</th>
+    <th>Actions</th>
+    </tr>
+         </thead>
+     <tbody>
+    @foreach (var course in Model.OrderBy(c => c.Num))
+     {
+       var enrolledStudents = course.Grades?.Count() ?? 0;
+    var avgGrade = course.Grades?.Any() == true ? course.Grades.Average(g => g.GradeValue) : 0;
+       var passedStudents = course.Grades?.Count(g => g.GradeValue >= course.MinDegree) ?? 0;
+      
+    <tr>
+       <td><strong class="text-primary">@course.Num</strong></td>
+      <td>@course.Name</td>
+ <td>
+     @if (!string.IsNullOrEmpty(course.Topic))
+     {
+    <span class="badge bg-secondary">@course.Topic</span>
+ }
+    else
+    {
+       <span class="text-muted">-</span>
+      }
+  </td>
+      <td>@course.Department?.Name</td>
+     <td><span class="badge bg-success">@course.Degree</span></td>
+    <td><span class="badge bg-warning text-dark">@course.MinDegree</span></td>
+     <td>
+        <div class="d-flex align-items-center">
+    <span class="badge bg-info me-2">@enrolledStudents</span>
+      @if (enrolledStudents > 0)
+       {
+         <small class="text-muted">
+   (Passed: @passedStudents, Avg: @string.Format("{0:F1}", avgGrade))
+ </small>
+}
+      </td>
+        <td>
+     <div class="btn-group" role="group">
+        <a asp-action="CourseStudents" asp-route-courseId="@course.Num" 
+  class="btn btn-sm btn-primary" title="View Students">
+       <i class="bi bi-people-fill"></i>
+    </a>
+     <a asp-action="AddGrade" asp-route-courseId="@course.Num" 
+  class="btn btn-sm btn-success" title="Add Grade">
+      <i class="bi bi-plus-circle"></i>
+      </a>
+     </div>
+ </td>
+     </tr>
+     }
+   </tbody>
+    </table>
+     </div>
+      </div>
+     </div>
+      </div>
+        </div>
+
+   <!-- Course Performance Summary -->
+        <div class="row mt-4">
+     @foreach (var course in Model.Take(4))
+        {
+     var enrolledCount = course.Grades?.Count() ?? 0;
+         var passedCount = course.Grades?.Count(g => g.GradeValue >= course.MinDegree) ?? 0;
+       var passRate = enrolledCount > 0 ? (passedCount * 100.0 / enrolledCount) : 0;
+      
+     <div class="col-md-6 col-lg-3 mb-3">
+     <div class="card border-left-primary shadow h-100" style="border-left: 0.25rem solid #4e73df!important;">
+     <div class="card-body">
+      <div class="row no-gutters align-items-center">
+ <div class="col mr-2">
+  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+      @course.Name
+      </div>
+   <div class="h5 mb-0 font-weight-bold text-gray-800">
+       @passRate.ToString("F1")% Pass Rate
+     </div>
+     <small class="text-muted">@passedCount/@enrolledCount students passed</small>
+   </div>
+    <div class="col-auto">
+  <i class="bi bi-graph-up-arrow fa-2x text-gray-300"></i>
+      </div>
+    </div>
+       </div>
+ </div>
+      </div>
+     }
+        </div>
+    }
+  else
+    {
+        <!-- No Courses Assigned -->
+   <div class="row">
+     <div class="col-12">
+        <div class="card shadow text-center">
+         <div class="card-body py-5">
+      <i class="bi bi-book text-muted" style="font-size: 5rem;"></i>
+     <h3 class="mt-3 text-muted">No Courses Assigned</h3>
+    <p class="text-muted">You don't have any courses assigned yet. Please contact the administrator.</p>
+      <a asp-action="Dashboard" class="btn btn-primary btn-lg">
+       <i class="bi bi-arrow-left"></i> Back to Dashboard
+   </a>
+      </div>
+  </div>
+     </div>
+        </div>
+    }
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+   <div class="col-12">
+     <div class="card shadow">
+    <div class="card-header bg-light">
+   <h5 class="mb-0">Quick Actions</h5>
+   </div>
+      <div class="card-body">
+   <div class="d-flex flex-wrap gap-2">
+      <a asp-action="Dashboard" class="btn btn-outline-primary">
+    <i class="bi bi-speedometer2"></i> Back to Dashboard
+  </a>
+       <a asp-action="EditProfile" class="btn btn-outline-warning">
+   <i class="bi bi-person-gear"></i> Edit Profile
+   </a>
+ </div>
+    </div>
+     </div>
+     </div>
+    </div>
+</div>
+
+<style>
+.border-left-primary {
+  border-left: 0.25rem solid #4e73df !important;
+}
+</style>

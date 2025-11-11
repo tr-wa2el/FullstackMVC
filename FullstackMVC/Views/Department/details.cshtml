@@ -1,0 +1,24 @@
+﻿@model Department
+
+
+
+
+<div class="card" style="width: 34rem;">
+    <h1> @ViewData["msg"]</h1>
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.MangerName</p>
+
+        <select>
+            <!--(List<string>)ViewData["brc"]-->
+            @foreach (var b in ViewBag.brc)          
+            {
+                <option>@b</option>
+            }
+        </select>
+
+        <h3 style="color:@ViewData["color"]">number of Employees => @ViewData["count"]</h3>
+
+        <a href="/department/getall" class="btn btn-primary">Back to List</a> 
+    </div>
+</div>

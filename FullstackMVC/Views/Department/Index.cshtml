@@ -1,0 +1,98 @@
+﻿@model List<Department>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-building"></i> Departments</h2>
+        <a asp-action="Add" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Department
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><i class="bi bi-tag"></i> Name</th>
+                                <th scope="col"><i class="bi bi-person"></i> Manager</th>
+                                <th scope="col"><i class="bi bi-geo-alt"></i> Location</th>
+                                <th scope="col"><i class="bi bi-pc-display"></i> PCs</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@d.Id</th>
+                                    <td>
+                                        <strong>@d.Name</strong>
+                                    </td>
+                                    <td>@(d.MangerName ?? "N/A")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(d.Location))
+                                        {
+                                            <span class="badge bg-info">@d.Location</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td>@(d.PcNumbers ?? 0)</td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@d.Id" class="btn btn-sm btn-info"
+                                                title="Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@d.Id" class="btn btn-sm btn-warning"
+                                                title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@d.Id" class="btn btn-sm btn-danger"
+                                                title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No departments found.
+                    <a asp-action="Add" class="alert-link">Add the first department</a>.
+                </div>
+            }
+        </div>
+    </div>
+</div>

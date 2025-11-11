@@ -1,0 +1,24 @@
+﻿@using FullstackMVC.ViewModels
+@model DeptWithEctraInfoVM
+
+
+<div class="card" style="width: 34rem;">
+    <h1>@Model.Message</h1>
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.Manger</p>
+        <h1 style="color:@Model.Color">emps# => @Model.Count</h1>
+        <select>
+            @foreach(var b in Model.Branches)
+            {
+                <option>@b</option>
+            }
+        </select>
+
+        @foreach(var e in Model.empsNames)
+        {
+            <ol>@e</ol>
+        }
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>

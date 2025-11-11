@@ -1,0 +1,139 @@
+﻿@model FullstackMVC.Models.Grade
+
+@{
+    ViewData["Title"] = "Add Grade";
+}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+        <div class="col-md-8">
+ <div class="card shadow">
+    <div class="card-header bg-success text-white">
+     <h2 class="mb-0">
+       <i class="bi bi-plus-circle"></i> Add Student Grade
+       </h2>
+           <p class="mb-0">Course: <strong>@ViewBag.CourseName</strong> (Code: @ViewBag.CourseId)</p>
+            </div>
+   <div class="card-body">
+       <div class="alert alert-info">
+<i class="bi bi-info-circle"></i> 
+         <strong>Grade Range:</strong> 
+    Min: @ViewBag.MinDegree | Max: @ViewBag.MaxDegree
+    </div>
+
+      <form asp-action="AddGrade" method="post">
+     <input type="hidden" asp-for="CourseNum" value="@ViewBag.CourseId" />
+       
+   <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+      <div class="mb-4">
+  <label asp-for="StudentSSN" class="form-label">Select Student</label>
+         <select asp-for="StudentSSN" class="form-select form-select-lg" asp-items="ViewBag.Students">
+  <option value="">-- Select Student --</option>
+     </select>
+       <span asp-validation-for="StudentSSN" class="text-danger"></span>
+       </div>
+
+        <div class="mb-4">
+  <label asp-for="GradeValue" class="form-label">Grade</label>
+     <div class="input-group input-group-lg">
+        <input asp-for="GradeValue" class="form-control" type="number" 
+  min="0" max="@ViewBag.MaxDegree" step="0.1" 
+  placeholder="Enter grade (0 - @ViewBag.MaxDegree)" />
+      <span class="input-group-text">/ @ViewBag.MaxDegree</span>
+ </div>
+      <span asp-validation-for="GradeValue" class="text-danger"></span>
+   <small class="form-text text-muted">
+     Minimum passing grade: @ViewBag.MinDegree
+    </small>
+         </div>
+
+     <!-- Grade Preview -->
+     <div class="mb-4">
+     <div class="card bg-light">
+     <div class="card-body">
+        <h6 class="card-title">Grade Preview</h6>
+ <div id="gradePreview" class="d-none">
+   <div class="row">
+       <div class="col-md-4">
+          <strong>Grade:</strong> <span id="previewGrade">-</span> / @ViewBag.MaxDegree
+       </div>
+      <div class="col-md-4">
+      <strong>Percentage:</strong> <span id="previewPercentage">-</span>%
+    </div>
+      <div class="col-md-4">
+   <strong>Status:</strong> <span id="previewStatus" class="badge">-</span>
+      </div>
+   </div>
+        <div class="mt-2">
+ <div class="progress">
+   <div id="previewProgressBar" class="progress-bar" style="width: 0%"></div>
+    </div>
+      </div>
+      </div>
+    </div>
+    </div>
+        </div>
+
+        <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success btn-lg">
+      <i class="bi bi-save"></i> Save Grade
+        </button>
+         <a asp-action="CourseStudents" asp-route-courseId="@ViewBag.CourseId" class="btn btn-secondary btn-lg">
+        <i class="bi bi-arrow-left"></i> Back to Students
+     </a>
+    </div>
+       </form>
+    </div>
+ </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+ <script>
+        document.addEventListener('DOMContentLoaded', function() {
+       const gradeInput = document.querySelector('input[name="GradeValue"]');
+       const preview = document.getElementById('gradePreview');
+      const previewGrade = document.getElementById('previewGrade');
+       const previewPercentage = document.getElementById('previewPercentage');
+       const previewStatus = document.getElementById('previewStatus');
+      const previewProgressBar = document.getElementById('previewProgressBar');
+  
+     const maxGrade = @ViewBag.MaxDegree;
+        const minGrade = @ViewBag.MinDegree;
+
+      if (gradeInput) {
+        gradeInput.addEventListener('input', function() {
+       const value = parseFloat(this.value);
+    
+       if (!isNaN(value) && value >= 0) {
+     preview.classList.remove('d-none');
+        
+   const percentage = (value / maxGrade) * 100;
+        const isPassing = value >= minGrade;
+    
+    previewGrade.textContent = value;
+      previewPercentage.textContent = percentage.toFixed(1);
+ 
+      if (isPassing) {
+     previewStatus.textContent = 'Passed';
+    previewStatus.className = 'badge bg-success';
+        previewProgressBar.className = 'progress-bar bg-success';
+   } else {
+   previewStatus.textContent = 'Failed';
+     previewStatus.className = 'badge bg-danger';
+    previewProgressBar.className = 'progress-bar bg-danger';
+    }
+       
+       previewProgressBar.style.width = percentage + '%';
+        } else {
+    preview.classList.add('d-none');
+   }
+        });
+   }
+        });
+ </script>
+}

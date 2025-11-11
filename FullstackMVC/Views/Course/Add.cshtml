@@ -1,0 +1,87 @@
+﻿@model FullstackMVC.Models.Course
+
+@{
+    ViewData["Title"] = "Add Course";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Course</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Add" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Course Name -->
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter course name (2-20 characters)" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <small class="form-text text-muted">Course name must be between 2 and 20 characters and unique per department</small>
+                        </div>
+
+                        <!-- Department -->
+                        <div class="mb-3">
+                            <label asp-for="DeptId" class="form-label">Department</label>
+                            <select asp-for="DeptId" class="form-control" asp-items="ViewBag.Departments">
+                                <option value="">-- Select Department --</option>
+                            </select>
+                            <span asp-validation-for="DeptId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Topic -->
+                        <div class="mb-3">
+                            <label asp-for="Topic" class="form-label"></label>
+                            <input asp-for="Topic" class="form-control" placeholder="e.g., Programming, Database, Web Development" />
+                            <span asp-validation-for="Topic" class="text-danger"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter course description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <!-- Maximum Degree -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Degree" class="form-label"></label>
+                                <input asp-for="Degree" type="number" step="0.01" class="form-control" placeholder="100-120" />
+                                <span asp-validation-for="Degree" class="text-danger"></span>
+                                <small class="form-text text-muted">Must be between 100 and 120</small>
+                            </div>
+
+                            <!-- Minimum Degree -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="MinDegree" class="form-label"></label>
+                                <input asp-for="MinDegree" type="number" step="0.01" class="form-control" placeholder="50-60" />
+                                <span asp-validation-for="MinDegree" class="text-danger"></span>
+                                <small class="form-text text-muted">Must be between 50 and 60, and less than max degree</small>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="GetAll" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-plus-circle"></i> Add Course
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

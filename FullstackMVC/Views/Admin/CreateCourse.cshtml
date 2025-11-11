@@ -1,0 +1,154 @@
+﻿@model FullstackMVC.Models.Course
+
+@{
+    ViewData["Title"] = "Create Course";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+    <div class="col-md-8">
+            <div class="card shadow">
+     <div class="card-header bg-success text-white">
+         <h2 class="mb-0">
+          <i class="bi bi-book-half"></i> Create New Course
+       </h2>
+            </div>
+<div class="card-body">
+        <form asp-action="CreateCourse" method="post">
+      <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+     <div class="row">
+  <div class="col-md-6 mb-3">
+       <label asp-for="Num" class="form-label">Course Number</label>
+    <input asp-for="Num" class="form-control" type="number" placeholder="e.g., 101" />
+         <span asp-validation-for="Num" class="text-danger"></span>
+   </div>
+     <div class="col-md-6 mb-3">
+           <label asp-for="Name" class="form-label">Course Name</label>
+         <input asp-for="Name" class="form-control" placeholder="e.g., Introduction to Programming" />
+     <span asp-validation-for="Name" class="text-danger"></span>
+         </div>
+    </div>
+
+         <div class="row">
+      <div class="col-md-6 mb-3">
+          <label asp-for="Topic" class="form-label">Course Topic</label>
+          <input asp-for="Topic" class="form-control" placeholder="e.g., Computer Science" />
+    <span asp-validation-for="Topic" class="text-danger"></span>
+ </div>
+      <div class="col-md-6 mb-3">
+     <label asp-for="DeptId" class="form-label">Department</label>
+           <select asp-for="DeptId" class="form-select" asp-items="ViewBag.Departments">
+   <option value="">-- Select Department --</option>
+ </select>
+         <span asp-validation-for="DeptId" class="text-danger"></span>
+    </div>
+             </div>
+
+   <div class="row">
+     <div class="col-md-4 mb-3">
+    <label asp-for="Degree" class="form-label">Maximum Degree</label>
+     <input asp-for="Degree" class="form-control" type="number" min="1" max="1000" placeholder="100" />
+    <span asp-validation-for="Degree" class="text-danger"></span>
+         <small class="form-text text-muted">Maximum possible grade for this course</small>
+              </div>
+          <div class="col-md-4 mb-3">
+ <label asp-for="MinDegree" class="form-label">Minimum Passing Degree</label>
+        <input asp-for="MinDegree" class="form-control" type="number" min="1" placeholder="60" />
+    <span asp-validation-for="MinDegree" class="text-danger"></span>
+           <small class="form-text text-muted">Minimum grade to pass</small>
+     </div>
+    <div class="col-md-4 mb-3">
+          <label asp-for="InstructorId" class="form-label">Instructor (Optional)</label>
+          <select asp-for="InstructorId" class="form-select" asp-items="ViewBag.Instructors">
+       <option value="">-- No Instructor Assigned --</option>
+      </select>
+            <span asp-validation-for="InstructorId" class="text-danger"></span>
+            </div>
+      </div>
+
+        <div class="mb-3">
+                 <label asp-for="Description" class="form-label">Course Description</label>
+         <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter course description, objectives, and requirements..."></textarea>
+       <span asp-validation-for="Description" class="text-danger"></span>
+  </div>
+
+          <!-- Grade Validation Preview -->
+         <div class="mb-4">
+         <div class="card bg-light">
+      <div class="card-body">
+     <h6 class="card-title">Grade Configuration Preview</h6>
+        <div id="gradePreview" class="d-none">
+       <div class="row">
+             <div class="col-md-4">
+       <strong>Max Grade:</strong> <span id="previewMaxGrade">-</span>
+ </div>
+    <div class="col-md-4">
+   <strong>Pass Grade:</strong> <span id="previewMinGrade">-</span>
+    </div>
+               <div class="col-md-4">
+       <strong>Pass Rate:</strong> <span id="previewPassRate">-</span>%
+     </div>
+   </div>
+    </div>
+    </div>
+    </div>
+           </div>
+
+         <div class="d-flex gap-2">
+       <button type="submit" class="btn btn-success btn-lg">
+    <i class="bi bi-save"></i> Create Course
+           </button>
+  <a asp-action="Courses" class="btn btn-secondary btn-lg">
+          <i class="bi bi-arrow-left"></i> Back to Courses
+     </a>
+            </div>
+       </form>
+          </div>
+       </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  const maxGradeInput = document.querySelector('input[name="Degree"]');
+       const minGradeInput = document.querySelector('input[name="MinDegree"]');
+    const preview = document.getElementById('gradePreview');
+  const previewMaxGrade = document.getElementById('previewMaxGrade');
+         const previewMinGrade = document.getElementById('previewMinGrade');
+    const previewPassRate = document.getElementById('previewPassRate');
+
+    function updatePreview() {
+                const maxGrade = parseFloat(maxGradeInput.value);
+     const minGrade = parseFloat(minGradeInput.value);
+
+           if (!isNaN(maxGrade) && !isNaN(minGrade) && maxGrade > 0 && minGrade > 0) {
+     preview.classList.remove('d-none');
+          previewMaxGrade.textContent = maxGrade;
+ previewMinGrade.textContent = minGrade;
+        
+     const passRate = (minGrade / maxGrade) * 100;
+       previewPassRate.textContent = passRate.toFixed(1);
+ 
+// Validation
+            if (minGrade >= maxGrade) {
+minGradeInput.setCustomValidity('Minimum grade must be less than maximum grade');
+ } else {
+    minGradeInput.setCustomValidity('');
+}
+                } else {
+         preview.classList.add('d-none');
+          }
+        }
+
+    if (maxGradeInput && minGradeInput) {
+          maxGradeInput.addEventListener('input', updatePreview);
+        minGradeInput.addEventListener('input', updatePreview);
+            }
+    });
+    </script>
+}

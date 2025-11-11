@@ -1,0 +1,78 @@
+﻿@model FullstackMVC.Models.Course
+
+@{
+    ViewData["Title"] = "Delete Course";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0"><i class="bi bi-trash"></i> Delete Course</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>Warning!</strong> Are you sure you want to delete this course? This action cannot be undone.
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Course Number</dt>
+                        <dd class="col-sm-8"><span class="badge bg-secondary fs-6">@Model.Num</span></dd>
+
+                        <dt class="col-sm-4">Course Name</dt>
+                        <dd class="col-sm-8"><strong>@Model.Name</strong></dd>
+
+                        <dt class="col-sm-4">Topic</dt>
+                        <dd class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.Topic))
+                            {
+                                <span class="badge bg-info">@Model.Topic</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">N/A</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Description</dt>
+                        <dd class="col-sm-8">@(Model.Description ?? "N/A")</dd>
+
+                        <dt class="col-sm-4">Maximum Degree</dt>
+                        <dd class="col-sm-8"><span class="badge bg-success fs-6">@Model.Degree</span></dd>
+
+                        <dt class="col-sm-4">Minimum Degree</dt>
+                        <dd class="col-sm-8"><span class="badge bg-warning fs-6">@Model.MinDegree</span></dd>
+
+                        <dt class="col-sm-4">Enrolled Students</dt>
+                        <dd class="col-sm-8"><span class="badge bg-primary fs-6">@(Model.Grades?.Count ?? 0) Students</span></dd>
+
+                        <dt class="col-sm-4">Assigned Instructors</dt>
+                        <dd class="col-sm-8"><span class="badge bg-info fs-6">@(Model.Instructors?.Count ?? 0) Instructors</span></dd>
+                    </dl>
+
+                    @if (Model.Grades?.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <strong>Notice:</strong> This course has @Model.Grades.Count enrolled student(s). Deleting this course will also delete all associated grade records.
+                        </div>
+                    }
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Num" />
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="GetAll" class="btn btn-secondary btn-lg">
+                                <i class="bi bi-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="bi bi-trash-fill"></i> Confirm Delete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

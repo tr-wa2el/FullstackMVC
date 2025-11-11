@@ -1,0 +1,346 @@
+﻿@{
+    ViewData["Title"] = "Compare Filters Effect";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg">
+   <div class="card-header bg-primary text-white">
+ <h2><i class="bi bi-funnel"></i> Result Filters Comparison</h2>
+                 <p class="mb-0">See the difference filters make to your responses</p>
+    </div>
+        <div class="card-body">
+       
+           <div class="alert alert-info">
+     <h4><i class="bi bi-lightbulb"></i> How This Works</h4>
+     <p>Click the buttons below to test different actions. Open your browser's <strong>Network tab</strong> (F12) to see the response headers.</p>
+     <p>Actions with filters will have custom headers like <code>X-Demo-Header</code>, <code>X-Response-Time</code>, and <code>Cache-Control</code>.</p>
+             </div>
+
+         <!-- Comparison Table -->
+        <div class="row mt-4">
+ <div class="col-md-6">
+               <div class="card border-danger h-100">
+     <div class="card-header bg-danger text-white">
+            <h5><i class="bi bi-x-circle"></i> Without Filters</h5>
+        </div>
+       <div class="card-body">
+      <h6>Action: WithoutHeader</h6>
+         <p class="text-muted">No custom filters applied</p>
+       
+       <h6 class="mt-3">Expected Headers:</h6>
+       <ul class="list-group">
+   <li class="list-group-item">
+      <code>Content-Type</code>
+             <span class="badge bg-secondary float-end">Standard</span>
+       </li>
+    <li class="list-group-item">
+      <code>Date</code>
+ <span class="badge bg-secondary float-end">Standard</span>
+         </li>
+   <li class="list-group-item">
+          <code>Server</code>
+             <span class="badge bg-secondary float-end">Standard</span>
+    </li>
+     </ul>
+    
+      <button class="btn btn-danger w-100 mt-3 test-btn" 
+         data-url="@Url.Action("WithoutHeader")"
+                data-target="result1">
+           <i class="bi bi-play-circle"></i> Test Without Filters
+          </button>
+<div id="result1" class="mt-3"></div>
+  </div>
+  </div>
+  </div>
+
+         <div class="col-md-6">
+           <div class="card border-success h-100">
+     <div class="card-header bg-success text-white">
+              <h5><i class="bi bi-check-circle"></i> With Filters</h5>
+</div>
+     <div class="card-body">
+         <h6>Action: ViewHeaders</h6>
+               <p class="text-muted">
+          <span class="badge bg-primary">AddCustomHeader</span> filter applied
+     </p>
+ 
+<h6 class="mt-3">Expected Headers:</h6>
+      <ul class="list-group">
+   <li class="list-group-item">
+         <code>X-Demo-Header</code>
+             <span class="badge bg-primary float-end">Filter</span>
+         </li>
+       <li class="list-group-item">
+          <code>X-Response-Time</code>
+      <span class="badge bg-primary float-end">Filter</span>
+  </li>
+             <li class="list-group-item">
+      <code>X-Controller-Name</code>
+         <span class="badge bg-info float-end">Manual</span>
+   </li>
+             <li class="list-group-item">
+ <code>X-Action-Name</code>
+    <span class="badge bg-info float-end">Manual</span>
+         </li>
+         </ul>
+      
+      <button class="btn btn-success w-100 mt-3 test-btn" 
+           data-url="@Url.Action("ViewHeaders")"
+            data-target="result2">
+    <i class="bi bi-play-circle"></i> Test With Filters
+          </button>
+ <div id="result2" class="mt-3"></div>
+        </div>
+       </div>
+        </div>
+        </div>
+
+         <!-- Caching Test -->
+      <div class="card border-warning mt-4">
+ <div class="card-header bg-warning">
+           <h5><i class="bi bi-hourglass-split"></i> Cache Result Filter</h5>
+    </div>
+        <div class="card-body">
+      <div class="row">
+            <div class="col-md-8">
+           <h6>Action: WithCaching</h6>
+        <p>
+     <span class="badge bg-warning text-dark">CacheResult(120s)</span>
+        <span class="badge bg-primary">AddCustomHeader</span>
+      </p>
+       
+              <h6 class="mt-3">Expected Cache Headers:</h6>
+     <ul>
+        <li><code>Cache-Control: public, max-age=120</code></li>
+         <li><code>Expires: [UTC timestamp + 120 seconds]</code></li>
+         <li><code>X-Cached: Yes</code></li>
+             </ul>
+   
+     <p class="text-muted">
+           <i class="bi bi-info-circle"></i> The response will be cached by the browser for 2 minutes. 
+      Subsequent requests within this time will use the cached version.
+     </p>
+            </div>
+              <div class="col-md-4">
+      <button class="btn btn-warning w-100 test-btn" 
+      data-url="@Url.Action("WithCaching")"
+ data-target="result3">
+       <i class="bi bi-play-circle"></i> Test Caching
+     </button>
+        <div id="result3" class="mt-3"></div>
+         </div>
+         </div>
+               </div>
+     </div>
+
+          <!-- Multiple Headers Test -->
+      <div class="card border-info mt-4">
+        <div class="card-header bg-info text-white">
+         <h5><i class="bi bi-stack"></i> Multiple Filters Stack</h5>
+            </div>
+      <div class="card-body">
+           <div class="row">
+             <div class="col-md-8">
+      <h6>Action: WithMultipleHeaders</h6>
+ <p>Three <span class="badge bg-primary">AddCustomHeader</span> filters applied:</p>
+    
+          <div class="row">
+   <div class="col-md-4">
+       <div class="card bg-light">
+    <div class="card-body p-2">
+           <small><strong>Filter 1:</strong></small><br>
+  <code>X-Header-1: Value1</code>
+               </div>
+        </div>
+   </div>
+         <div class="col-md-4">
+  <div class="card bg-light">
+     <div class="card-body p-2">
+       <small><strong>Filter 2:</strong></small><br>
+           <code>X-Header-2: Value2</code>
+       </div>
+            </div>
+         </div>
+      <div class="col-md-4">
+         <div class="card bg-light">
+   <div class="card-body p-2">
+     <small><strong>Filter 3:</strong></small><br>
+          <code>X-Header-3: Value3</code>
+             </div>
+                     </div>
+     </div>
+        </div>
+      
+                   <p class="mt-3 text-muted">
+    <i class="bi bi-info-circle"></i> All three filters will execute and add their respective headers.
+      </p>
+          </div>
+              <div class="col-md-4">
+         <button class="btn btn-info w-100 test-btn" 
+              data-url="@Url.Action("WithMultipleHeaders")"
+   data-target="result4">
+   <i class="bi bi-play-circle"></i> Test Multiple
+          </button>
+    <div id="result4" class="mt-3"></div>
+          </div>
+          </div>
+           </div>
+                 </div>
+
+         <!-- Live Header Inspector -->
+           <div class="card border-dark mt-4">
+        <div class="card-header bg-dark text-white">
+       <h5><i class="bi bi-terminal"></i> Live Header Inspector</h5>
+   </div>
+  <div class="card-body">
+           <p>Select an endpoint to inspect all its headers:</p>
+       
+  <div class="btn-group w-100 mb-3" role="group">
+ <button type="button" class="btn btn-outline-primary inspect-btn" data-url="@Url.Action("WithoutHeader")">
+            No Filter
+     </button>
+  <button type="button" class="btn btn-outline-success inspect-btn" data-url="@Url.Action("WithDefaultHeader")">
+       Default Header
+           </button>
+ <button type="button" class="btn btn-outline-info inspect-btn" data-url="@Url.Action("WithCustomHeader")">
+       Custom Header
+                </button>
+            <button type="button" class="btn btn-outline-warning inspect-btn" data-url="@Url.Action("WithCaching")">
+          Cached
+           </button>
+                 </div>
+     
+      <div id="inspectorResult"></div>
+     </div>
+          </div>
+
+      <!-- Navigation -->
+    <div class="mt-4">
+  <a asp-action="ViewHeaders" class="btn btn-primary">
+ <i class="bi bi-list-check"></i> View All Headers
+     </a>
+          <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+     <i class="bi bi-house"></i> Back to Home
+        </a>
+          </div>
+    </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+      // Test button handler
+        document.querySelectorAll('.test-btn').forEach(btn => {
+          btn.addEventListener('click', async function() {
+  const url = this.dataset.url;
+         const targetId = this.dataset.target;
+       const resultDiv = document.getElementById(targetId);
+     
+           this.disabled = true;
+    const originalHtml = this.innerHTML;
+           this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...';
+   
+          try {
+       const response = await fetch(url);
+          
+  let html = '<div class="alert alert-success"><strong>✓ Request Successful</strong></div>';
+                html += '<div class="card"><div class="card-header"><h6>Response Headers</h6></div>';
+                html += '<div class="card-body p-0"><table class="table table-sm mb-0"><tbody>';
+  
+                    let customHeaderCount = 0;
+                for (let [key, value] of response.headers.entries()) {
+      const isCustom = key.startsWith('x-');
+     if (isCustom) customHeaderCount++;
+            
+   const badgeClass = isCustom ? 'bg-primary' : 'bg-secondary';
+      const badgeText = isCustom ? 'Custom' : 'Standard';
+          html += `<tr>
+      <td><code>${key}</code></td>
+       <td><code>${value}</code></td>
+          <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+          </tr>`;
+  }
+               
+              html += '</tbody></table></div>';
+                html += `<div class="card-footer text-muted">Found ${customHeaderCount} custom header(s)</div>`;
+         html += '</div>';
+                 
+       resultDiv.innerHTML = html;
+  
+        } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger"><strong>Error:</strong> ${error.message}</div>`;
+    } finally {
+      this.disabled = false;
+                    this.innerHTML = originalHtml;
+                }
+            });
+        });
+
+        // Inspector button handler
+        document.querySelectorAll('.inspect-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+     const url = this.dataset.url;
+              const resultDiv = document.getElementById('inspectorResult');
+     
+       // Highlight active button
+          document.querySelectorAll('.inspect-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+      
+       resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-primary"></div><p class="mt-2">Loading...</p></div>';
+                
+  try {
+         const response = await fetch(url);
+              
+       let html = '<div class="card mt-3">';
+            html += `<div class="card-header bg-dark text-white">
+      <h6>Headers for: <code>${url}</code></h6>
+             </div>`;
+      html += '<div class="card-body p-0">';
+             html += '<table class="table table-hover mb-0">';
+                html += '<thead><tr><th>Header Name</th><th>Value</th><th>Type</th></tr></thead>';
+      html += '<tbody>';
+      
+   const headers = Array.from(response.headers.entries()).sort((a, b) => {
+     // Sort custom headers first
+              const aCustom = a[0].startsWith('x-');
+            const bCustom = b[0].startsWith('x-');
+             if (aCustom && !bCustom) return -1;
+   if (!aCustom && bCustom) return 1;
+       return a[0].localeCompare(b[0]);
+            });
+  
+         for (let [key, value] of headers) {
+        const isCustom = key.startsWith('x-');
+         const rowClass = isCustom ? 'table-primary' : '';
+              const badgeClass = isCustom ? 'bg-primary' : 'bg-secondary';
+           const badgeText = isCustom ? 'Custom' : 'Standard';
+             
+  html += `<tr class="${rowClass}">
+        <td><strong><code>${key}</code></strong></td>
+        <td><code>${value}</code></td>
+     <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+          </tr>`;
+          }
+                 
+         html += '</tbody></table></div></div>';
+   resultDiv.innerHTML = html;
+            
+        } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger mt-3"><strong>Error:</strong> ${error.message}</div>`;
+         }
+            });
+        });
+
+ // Auto-inspect first endpoint on load
+        window.addEventListener('load', () => {
+    const firstInspectBtn = document.querySelector('.inspect-btn');
+      if (firstInspectBtn) {
+        setTimeout(() => firstInspectBtn.click(), 500);
+ }
+        });
+    </script>
+}

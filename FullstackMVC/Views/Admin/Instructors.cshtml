@@ -1,0 +1,146 @@
+﻿@model IEnumerable<FullstackMVC.Models.Instructor>
+
+@{
+    ViewData["Title"] = "Manage Instructors";
+}
+
+<div class="container-fluid mt-4">
+  <div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+   <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+     <h2 class="mb-0">
+     <i class="bi bi-person-badge-fill"></i> Instructor Management
+     </h2>
+      <a asp-action="CreateInstructor" class="btn btn-warning">
+      <i class="bi bi-person-plus"></i> Add New Instructor
+</a>
+    </div>
+     <div class="card-body">
+    @if (Model != null && Model.Any())
+      {
+     <!-- Instructor Statistics -->
+      <div class="row g-4 mb-4">
+      <div class="col-md-3">
+    <div class="card bg-warning text-dark">
+  <div class="card-body text-center">
+   <h3>@Model.Count()</h3>
+       <p class="mb-0">Total Instructors</p>
+  </div>
+    </div>
+      </div>
+     <div class="col-md-3">
+      <div class="card bg-success text-white">
+     <div class="card-body text-center">
+    <h3>@Model.Count(i => i.Courses != null && i.Courses.Any())</h3>
+      <p class="mb-0">Teaching</p>
+     </div>
+   </div>
+</div>
+  <div class="col-md-3">
+       <div class="card bg-info text-white">
+       <div class="card-body text-center">
+      <h3>@string.Format("{0:F1}", Model.Average(i => i.Age))</h3>
+      <p class="mb-0">Average Age</p>
+     </div>
+    </div>
+     </div>
+       <div class="col-md-3">
+     <div class="card bg-primary text-white">
+       <div class="card-body text-center">
+ <h3>@string.Format("{0:C0}", Model.Average(i => i.Salary))</h3>
+<p class="mb-0">Avg Salary</p>
+   </div>
+      </div>
+     </div>
+   </div>
+
+   <!-- Instructors Table -->
+      <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead class="table-dark">
+     <tr>
+      <th>ID</th>
+     <th>Name</th>
+    <th>Email</th>
+  <th>Age</th>
+       <th>Degree</th>
+       <th>Department</th>
+ <th>Salary</th>
+    <th>Courses</th>
+      <th>Actions</th>
+   </tr>
+      </thead>
+    <tbody>
+    @foreach (var instructor in Model.OrderBy(i => i.DeptId).ThenBy(i => i.Name))
+     {
+      var coursesCount = instructor.Courses?.Count() ?? 0;
+    var totalStudents = instructor.Courses?.SelectMany(c => c.Grades ?? new List<FullstackMVC.Models.Grade>()).Select(g => g.StudentSSN).Distinct().Count() ?? 0;
+      
+   <tr>
+     <td><strong class="text-primary">@instructor.Id</strong></td>
+      <td>@instructor.Name</td>
+    <td>@instructor.Email</td>
+      <td>@instructor.Age years</td>
+ <td>
+    @switch (instructor.Degree)
+    {
+        case "PhD":
+ <span class="badge bg-danger">PhD</span>
+  break;
+      case "Master":
+ <span class="badge bg-warning text-dark">Master</span>
+     break;
+       case "Professor":
+    <span class="badge bg-success">Professor</span>
+       break;
+      default:
+  <span class="badge bg-secondary">@instructor.Degree</span>
+     break;
+     }
+      </td>
+     <td>@instructor.Department?.Name</td>
+       <td>@instructor.Salary.ToString("C")</td>
+   <td>
+      <span class="badge bg-info">@coursesCount courses</span>
+      @if (totalStudents > 0)
+     {
+  <small class="text-success d-block">@totalStudents students</small>
+      }
+      </td>
+     <td>
+      <div class="btn-group" role="group">
+      <a asp-action="EditInstructor" asp-route-id="@instructor.Id" 
+    class="btn btn-sm btn-warning" title="Edit">
+       <i class="bi bi-pencil"></i>
+      </a>
+     <a asp-action="DeleteInstructor" asp-route-id="@instructor.Id" 
+       class="btn btn-sm btn-danger" title="Delete"
+  onclick="return confirm('Are you sure you want to delete this instructor?');">
+     <i class="bi bi-trash"></i>
+      </a>
+       <a asp-action="InstructorDetails" asp-route-id="@instructor.Id" 
+       class="btn btn-sm btn-info" title="Details">
+  <i class="bi bi-eye"></i>
+      </a>
+      </div>
+</td>
+      </tr>
+      }
+   </tbody>
+  </table>
+      </div>
+      }
+  else
+     {
+   <div class="text-center py-5">
+      <i class="bi bi-person-badge text-muted" style="font-size: 4rem;"></i>
+     <h4 class="text-muted mt-3">No Instructors Found</h4>
+    <p class="text-muted">Click "Add New Instructor" to create your first instructor record.</p>
+      </div>
+     }
+    </div>
+ </div>
+     </div>
+ </div>
+</div>

@@ -1,0 +1,268 @@
+﻿@model IEnumerable<FullstackMVC.Models.Grade>
+
+@{
+    ViewData["Title"] = "My Courses";
+}
+
+<div class="container-fluid mt-4">
+ <div class="row">
+        <div class="col-12">
+     <h1 class="mb-4 text-dark">
+     <i class="bi bi-book-fill text-success"></i> <strong>My Enrolled Courses</strong>
+  </h1>
+  </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+  <!-- Unified Summary Cards -->
+        <div class="row g-4 mb-4">
+ <div class="col-md-4">
+    <div class="card stats-card primary">
+      <div class="card-body text-center py-4">
+    <i class="bi bi-mortarboard-fill" style="font-size: 3.5rem; opacity: 0.9;"></i>
+     <h2 class="mt-3 fw-bold">@Model.Count()</h2>
+     <p class="mb-0 fs-5">Total Enrolled</p>
+     </div>
+       <div class="position-absolute top-0 end-0 p-2">
+  <i class="bi bi-book" style="font-size: 2rem; opacity: 0.3;"></i>
+   </div>
+        </div>
+ </div>
+  <div class="col-md-4">
+     <div class="card stats-card success">
+         <div class="card-body text-center py-4">
+      <i class="bi bi-check-circle-fill" style="font-size: 3.5rem; opacity: 0.9;"></i>
+      <h2 class="mt-3 fw-bold">@Model.Count(g => g.GradeValue >= g.Course.MinDegree)</h2>
+ <p class="mb-0 fs-5">Passed Courses</p>
+   </div>
+   <div class="position-absolute top-0 end-0 p-2">
+     <i class="bi bi-trophy" style="font-size: 2rem; opacity: 0.3;"></i>
+   </div>
+       </div>
+      </div>
+        <div class="col-md-4">
+   <div class="card stats-card info">
+        <div class="card-body text-center py-4">
+   <i class="bi bi-graph-up-arrow" style="font-size: 3.5rem; opacity: 0.9;"></i>
+     <h2 class="mt-3 fw-bold">@string.Format("{0:F1}", Model.Average(g => g.GradeValue))</h2>
+  <p class="mb-0 fs-5">Average Grade</p>
+   </div>
+   <div class="position-absolute top-0 end-0 p-2">
+ <i class="bi bi-graph-up" style="font-size: 2rem; opacity: 0.3;"></i>
+   </div>
+     </div>
+    </div>
+      </div>
+
+      <!-- Unified Courses Table -->
+      <div class="row">
+       <div class="col-12">
+     <div class="card">
+ <div class="card-header">
+           <h4 class="mb-0"><i class="bi bi-list-ul"></i> Course Details & Academic Performance</h4>
+   </div>
+   <div class="card-body p-0">
+  <div class="table-responsive">
+   <table class="table table-hover mb-0">
+        <thead>
+      <tr>
+ <th class="p-3">Course Code</th>
+         <th class="p-3">Course Name</th>
+    <th class="p-3">Department</th>
+    <th class="p-3">My Grade</th>
+      <th class="p-3">Max Grade</th>
+  <th class="p-3">Min Grade</th>
+    <th class="p-3">Status</th>
+       <th class="p-3">Performance</th>
+     </tr>
+          </thead>
+   <tbody>
+    @foreach (var grade in Model.OrderByDescending(g => g.GradeValue))
+{
+         var percentage = (grade.GradeValue / grade.Course.Degree) * 100;
+         var isPassed = grade.GradeValue >= grade.Course.MinDegree;
+      
+  <tr class="course-row @(isPassed ? "" : "table-warning")" style="border-left: 4px solid @(isPassed ? "#56ab2f" : "#f093fb");">
+        <td class="p-3"><strong class="text-primary fs-5">#@grade.Course?.Num</strong></td>
+   <td class="p-3">
+     <div class="fw-bold text-dark">@grade.Course?.Name</div>
+         @if (!string.IsNullOrEmpty(grade.Course?.Topic))
+  {
+     <small class="text-muted"><i class="bi bi-tag"></i> @grade.Course?.Topic</small>
+         }
+        </td>
+<td class="p-3">
+  <span class="badge bg-dark px-3 py-2">@grade.Course?.Department?.Name</span>
+</td>
+        <td class="p-3">
+   <span class="badge @(isPassed ? "bg-success" : "bg-danger") fs-6 px-3 py-2">
+ @grade.GradeValue
+ </span>
+  </td>
+   <td class="p-3"><span class="badge bg-info px-3 py-2">@grade.Course?.Degree</span></td>
+<td class="p-3"><span class="badge bg-warning px-3 py-2">@grade.Course?.MinDegree</span></td>
+    <td class="p-3">
+     @if (isPassed)
+   {
+    <span class="badge bg-success px-3 py-2">
+  <i class="bi bi-check-circle"></i> Passed
+   </span>
+    }
+  else
+   {
+    <span class="badge bg-danger px-3 py-2">
+  <i class="bi bi-x-circle"></i> Failed
+      </span>
+    }
+         </td>
+         <td class="p-3">
+    <div class="d-flex align-items-center">
+       <div class="progress me-2" style="height: 25px; width: 120px;">
+ <div class="progress-bar @(isPassed ? "bg-success" : "bg-danger")" 
+  role="progressbar" 
+ style="width: @percentage%;" 
+  aria-valuenow="@percentage" 
+  aria-valuemin="0" 
+ aria-valuemax="100">
+  </div>
+     </div>
+     <span class="fw-bold @(isPassed ? "text-success" : "text-danger")">
+ @string.Format("{0:F1}%", percentage)
+     </span>
+         </div>
+         </td>
+</tr>
+       }
+    </tbody>
+   </table>
+     </div>
+  </div>
+  </div>
+ </div>
+      </div>
+
+        <!-- Unified Performance Chart -->
+     <div class="row mt-4">
+  <div class="col-12">
+    <div class="card">
+ <div class="card-header">
+          <h5 class="mb-0"><i class="bi bi-bar-chart-fill text-info"></i> Academic Performance Overview</h5>
+   </div>
+    <div class="card-body">
+ <div class="row text-center g-4">
+     <div class="col-md-3">
+      <div class="grade-indicator success">
+   <h3 class="text-success fw-bold">@Model.Count()</h3>
+       <p class="mb-0 text-muted fw-semibold">Total Courses</p>
+   </div>
+      </div>
+    <div class="col-md-3">
+      <div class="grade-indicator success">
+    <h3 class="text-success fw-bold">@Model.Count(g => g.GradeValue >= g.Course.MinDegree)</h3>
+  <p class="mb-0 text-muted fw-semibold">Passed</p>
+       </div>
+    </div>
+  <div class="col-md-3">
+    <div class="grade-indicator warning">
+      <h3 class="text-danger fw-bold">@Model.Count(g => g.GradeValue < g.Course.MinDegree)</h3>
+     <p class="mb-0 text-muted fw-semibold">Failed</p>
+    </div>
+</div>
+<div class="col-md-3">
+   <div class="grade-indicator info">
+      <h3 class="text-info fw-bold">@string.Format("{0:F1}%", ((double)Model.Count(g => g.GradeValue >= g.Course.MinDegree) / Model.Count()) * 100)</h3>
+       <p class="mb-0 text-muted fw-semibold">Success Rate</p>
+    </div>
+ </div>
+   </div>
+       </div>
+     </div>
+    </div>
+      </div>
+}
+    else
+ {
+      <!-- No Courses Enrolled -->
+   <div class="row">
+            <div class="col-12">
+       <div class="card text-center">
+   <div class="card-body py-5">
+  <i class="bi bi-book text-primary" style="font-size: 6rem; opacity: 0.7;"></i>
+       <h3 class="mt-4 text-dark">No Courses Enrolled</h3>
+       <p class="text-muted fs-5">You haven't enrolled in any courses yet.</p>
+    <a asp-action="AllCourses" class="btn btn-primary btn-lg mt-3">
+    <i class="bi bi-search"></i> Browse Available Courses
+      </a>
+   </div>
+     </div>
+</div>
+     </div>
+    }
+
+    <!-- Unified Quick Actions -->
+    <div class="row mt-5">
+        <div class="col-12">
+        <div class="card">
+       <div class="card-header">
+   <h5 class="mb-0"><i class="bi bi-lightning-fill text-warning"></i> Quick Actions</h5>
+    </div>
+   <div class="card-body">
+   <div class="d-flex flex-wrap gap-3">
+    <a asp-action="Dashboard" class="btn btn-primary">
+   <i class="bi bi-speedometer2"></i> Dashboard
+       </a>
+         <a asp-action="AllCourses" class="btn btn-secondary">
+   <i class="bi bi-collection"></i> Browse Courses
+      </a>
+    <a asp-action="Departments" class="btn btn-info">
+   <i class="bi bi-building"></i> Departments
+      </a>
+   <a asp-action="EditProfile" class="btn btn-warning">
+   <i class="bi bi-person-gear"></i> Edit Profile
+</a>
+      </div>
+     </div>
+     </div>
+  </div>
+    </div>
+</div>
+
+<style>
+.course-row {
+  transition: all 0.3s ease;
+}
+
+.course-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.badge {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+}
+
+.progress {
+  border: 1px solid #dee2e6;
+}
+
+.card {
+  border-radius: 15px !important;
+}
+
+.btn {
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+}
+
+.table th {
+  border: none !important;
+  font-size: 0.9rem;
+}
+
+.table td {
+  border: none !important;
+  border-bottom: 1px solid #f8f9fa !important;
+}
+</style>

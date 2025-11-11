@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+       <i class="bi bi-speedometer2"></i> Admin Dashboard
+       </h1>
+  </div>
+    </div>
+
+    <!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+     <div class="card bg-primary text-white shadow">
+   <div class="card-body">
+       <div class="d-flex justify-content-between align-items-center">
+     <div>
+<h6 class="card-title mb-0">Total Students</h6>
+     <h2 class="mt-2 mb-0">@ViewBag.TotalStudents</h2>
+     </div>
+      <div>
+     <i class="bi bi-people-fill" style="font-size: 3rem; opacity: 0.5;"></i>
+         </div>
+      </div>
+ <a asp-action="Students" class="btn btn-light btn-sm mt-3">View All</a>
+       </div>
+</div>
+        </div>
+
+        <div class="col-md-3">
+ <div class="card bg-success text-white shadow">
+    <div class="card-body">
+<div class="d-flex justify-content-between align-items-center">
+     <div>
+       <h6 class="card-title mb-0">Total Instructors</h6>
+   <h2 class="mt-2 mb-0">@ViewBag.TotalInstructors</h2>
+         </div>
+   <div>
+    <i class="bi bi-person-badge-fill" style="font-size: 3rem; opacity: 0.5;"></i>
+   </div>
+     </div>
+        <a asp-action="Instructors" class="btn btn-light btn-sm mt-3">View All</a>
+   </div>
+ </div>
+ </div>
+
+        <div class="col-md-3">
+ <div class="card bg-info text-white shadow">
+        <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+     <div>
+<h6 class="card-title mb-0">Total Courses</h6>
+        <h2 class="mt-2 mb-0">@ViewBag.TotalCourses</h2>
+ </div>
+        <div>
+    <i class="bi bi-book-fill" style="font-size: 3rem, opacity: 0.5;"></i>
+  </div>
+      </div>
+     <a asp-action="Courses" class="btn btn-light btn-sm mt-3">View All</a>
+    </div>
+   </div>
+        </div>
+
+        <div class="col-md-3">
+    <div class="card bg-warning text-dark shadow">
+   <div class="card-body">
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+ <h6 class="card-title mb-0">Total Departments</h6>
+    <h2 class="mt-2 mb-0">@ViewBag.TotalDepartments</h2>
+   </div>
+   <div>
+      <i class="bi bi-building" style="font-size: 3rem; opacity: 0.5;"></i>
+       </div>
+   </div>
+      <a asp-action="Departments" class="btn btn-dark btn-sm mt-3">View All</a>
+     </div>
+ </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+      <div class="col-12">
+      <div class="card shadow">
+   <div class="card-header bg-dark text-white">
+         <h4 class="mb-0">Quick Actions</h4>
+   </div>
+      <div class="card-body">
+        <div class="row g-3">
+    <div class="col-md-3">
+ <a asp-action="CreateStudent" class="btn btn-outline-primary w-100">
+     <i class="bi bi-person-plus-fill"></i> Add Student
+   </a>
+       </div>
+      <div class="col-md-3">
+   <a asp-action="CreateInstructor" class="btn btn-outline-success w-100">
+         <i class="bi bi-person-plus-fill"></i> Add Instructor
+     </a>
+ </div>
+   <div class="col-md-3">
+       <a asp-action="CreateCourse" class="btn btn-outline-info w-100">
+     <i class="bi bi-book-half"></i> Add Course
+    </a>
+     </div>
+ <div class="col-md-3">
+     <a asp-action="CreateDepartment" class="btn btn-outline-warning w-100">
+     <i class="bi bi-building"></i> Add Department
+        </a>
+</div>
+  </div>
+  </div>
+      </div>
+        </div>
+    </div>
+
+    <!-- Management Sections -->
+    <div class="row g-4">
+        <div class="col-md-6">
+       <div class="card shadow">
+ <div class="card-header bg-secondary text-white">
+    <h5 class="mb-0"><i class="bi bi-gear-fill"></i> User Management</h5>
+ </div>
+<div class="card-body">
+     <p class="text-muted">Manage user accounts and roles</p>
+     <a asp-action="Users" class="btn btn-secondary">Manage Users & Roles</a>
+  </div>
+   </div>
+        </div>
+
+        <div class="col-md-6">
+     <div class="card shadow">
+         <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0"><i class="bi bi-shield-check"></i> System Settings</h5>
+    </div>
+       <div class="card-body">
+    <p class="text-muted">Configure system settings and preferences</p>
+ <button class="btn btn-secondary" disabled>Coming Soon</button>
+       </div>
+ </div>
+     </div>
+    </div>
+</div>

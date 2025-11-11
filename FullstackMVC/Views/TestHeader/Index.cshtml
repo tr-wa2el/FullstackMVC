@@ -1,0 +1,383 @@
+﻿@{
+    ViewData["Title"] = "Result Filters Test Suite";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+          <!-- Hero Section -->
+        <div class="jumbotron bg-gradient text-white p-5 rounded shadow-lg" 
+       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <h1 class="display-4"><i class="bi bi-funnel-fill"></i> Result Filters Test Suite</h1>
+              <p class="lead">Interactive testing environment for ASP.NET Core Result Filters</p>
+       <hr class="my-4 bg-white">
+       <p>Test and visualize how Result Filters modify HTTP responses by adding custom headers, caching directives, and more.</p>
+       </div>
+
+            <!-- Quick Start -->
+  <div class="card mt-4 border-primary shadow">
+     <div class="card-header bg-primary text-white">
+     <h4><i class="bi bi-rocket-takeoff"></i> Quick Start Guide</h4>
+    </div>
+             <div class="card-body">
+       <div class="row">
+      <div class="col-md-4">
+  <div class="text-center">
+                <div class="display-1 text-primary">1</div>
+    <h5>Open Developer Tools</h5>
+        <p class="text-muted">Press <kbd>F12</kbd> and go to <strong>Network</strong> tab</p>
+  </div>
+         </div>
+           <div class="col-md-4">
+   <div class="text-center">
+        <div class="display-1 text-success">2</div>
+               <h5>Choose a Test</h5>
+           <p class="text-muted">Click any test button below</p>
+        </div>
+    </div>
+         <div class="col-md-4">
+  <div class="text-center">
+  <div class="display-1 text-info">3</div>
+            <h5>View Results</h5>
+     <p class="text-muted">Check <strong>Response Headers</strong> section</p>
+    </div>
+      </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- Main Test Sections -->
+   <div class="row mt-4">
+              
+    <!-- Interactive Tests -->
+     <div class="col-md-6 mb-4">
+           <div class="card h-100 border-success shadow-sm">
+             <div class="card-header bg-success text-white">
+         <h5><i class="bi bi-cursor-fill"></i> Interactive Tests</h5>
+     </div>
+        <div class="card-body">
+         <p>Click and see results in real-time:</p>
+   <div class="d-grid gap-2">
+             <a asp-action="CompareFilters" class="btn btn-success btn-lg">
+             <i class="bi bi-arrow-left-right"></i> Compare With/Without Filters
+     </a>
+      <a asp-action="ViewHeaders" class="btn btn-outline-success">
+         <i class="bi bi-list-check"></i> Interactive Header Viewer
+      </a>
+      </div>
+    <div class="alert alert-success mt-3 mb-0">
+      <small><i class="bi bi-star-fill"></i> <strong>Recommended for beginners</strong> - Visual and easy to understand</small>
+                </div>
+          </div>
+     </div>
+   </div>
+
+      <!-- Documentation -->
+         <div class="col-md-6 mb-4">
+ <div class="card h-100 border-info shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h5><i class="bi bi-book-fill"></i> Documentation & Guides</h5>
+              </div>
+              <div class="card-body">
+       <p>Learn how to test filters:</p>
+         <div class="d-grid gap-2">
+         <a asp-action="TestingGuide" class="btn btn-info btn-lg">
+ <i class="bi bi-journal-code"></i> Complete Testing Guide
+               </a>
+       <a href="~/RESULT_FILTERS_TESTING.md" target="_blank" class="btn btn-outline-info">
+ <i class="bi bi-file-text"></i> README Documentation
+            </a>
+     </div>
+      <div class="alert alert-info mt-3 mb-0">
+           <small><i class="bi bi-info-circle"></i> Step-by-step instructions for all testing methods</small>
+  </div>
+           </div>
+     </div>
+       </div>
+
+       </div>
+
+            <!-- Individual Filter Tests -->
+       <div class="card mt-4 shadow">
+    <div class="card-header bg-dark text-white">
+            <h4><i class="bi bi-grid-3x3-gap-fill"></i> Individual Filter Tests</h4>
+        </div>
+      <div class="card-body">
+     <div class="row">
+     
+        <!-- Default Header -->
+            <div class="col-md-4 mb-3">
+       <div class="card border-primary h-100">
+    <div class="card-header bg-light">
+       <h6><i class="bi bi-1-circle-fill text-primary"></i> Default Header</h6>
+        </div>
+      <div class="card-body">
+            <p class="small"><span class="badge bg-primary">AddCustomHeader</span></p>
+        <p class="small text-muted">Adds default <code>X-Action-Result-Key</code> header</p>
+          <p class="small"><strong>Expected:</strong></p>
+      <ul class="small">
+       <li><code>X-Action-Result-Key</code></li>
+     <li><code>X-Response-Time</code></li>
+           </ul>
+  </div>
+            <div class="card-footer">
+           <a asp-action="WithDefaultHeader" class="btn btn-primary btn-sm w-100">
+     <i class="bi bi-play"></i> Test
+    </a>
+    </div>
+     </div>
+ </div>
+
+       <!-- Custom Header -->
+      <div class="col-md-4 mb-3">
+   <div class="card border-success h-100">
+      <div class="card-header bg-light">
+        <h6><i class="bi bi-2-circle-fill text-success"></i> Custom Header</h6>
+        </div>
+    <div class="card-body">
+           <p class="small"><span class="badge bg-success">AddCustomHeader("X-My-Custom-Key", "MyCustomValue")</span></p>
+          <p class="small text-muted">Adds custom header with your values</p>
+               <p class="small"><strong>Expected:</strong></p>
+ <ul class="small">
+ <li><code>X-My-Custom-Key: MyCustomValue</code></li>
+                 <li><code>X-Response-Time</code></li>
+     </ul>
+        </div>
+        <div class="card-footer">
+    <a asp-action="WithCustomHeader" class="btn btn-success btn-sm w-100">
+       <i class="bi bi-play"></i> Test
+        </a>
+        </div>
+         </div>
+        </div>
+
+    <!-- Bonus Header -->
+         <div class="col-md-4 mb-3">
+     <div class="card border-warning h-100">
+  <div class="card-header bg-light">
+        <h6><i class="bi bi-3-circle-fill text-warning"></i> Mixed Headers</h6>
+             </div>
+        <div class="card-body">
+       <p class="small">
+           <span class="badge bg-warning text-dark">Filter</span>
+     <span class="badge bg-info">Manual</span>
+     </p>
+   <p class="small text-muted">Combines filter and manual headers</p>
+  <p class="small"><strong>Expected:</strong></p>
+     <ul class="small">
+              <li><code>X-Bonus-Key</code> (filter)</li>
+     <li><code>X-Manual-Header</code> (code)</li>
+</ul>
+                  </div>
+       <div class="card-footer">
+        <a asp-action="WithBonusHeader" class="btn btn-warning btn-sm w-100">
+         <i class="bi bi-play"></i> Test
+         </a>
+  </div>
+      </div>
+            </div>
+
+          <!-- Multiple Headers -->
+            <div class="col-md-4 mb-3">
+<div class="card border-info h-100">
+               <div class="card-header bg-light">
+            <h6><i class="bi bi-4-circle-fill text-info"></i> Multiple Filters</h6>
+                  </div>
+        <div class="card-body">
+           <p class="small">
+     <span class="badge bg-info">3x AddCustomHeader</span>
+       </p>
+ <p class="small text-muted">Multiple filters on same action</p>
+ <p class="small"><strong>Expected:</strong></p>
+            <ul class="small">
+           <li><code>X-Header-1: Value1</code></li>
+         <li><code>X-Header-2: Value2</code></li>
+              <li><code>X-Header-3: Value3</code></li>
+       </ul>
+          </div>
+          <div class="card-footer">
+   <a asp-action="WithMultipleHeaders" class="btn btn-info btn-sm w-100">
+  <i class="bi bi-play"></i> Test
+               </a>
+               </div>
+      </div>
+            </div>
+
+  <!-- Caching -->
+         <div class="col-md-4 mb-3">
+            <div class="card border-danger h-100">
+   <div class="card-header bg-light">
+      <h6><i class="bi bi-5-circle-fill text-danger"></i> Cache Filter</h6>
+      </div>
+    <div class="card-body">
+  <p class="small">
+       <span class="badge bg-danger">CacheResult(120s)</span>
+      </p>
+ <p class="small text-muted">Adds caching directives</p>
+    <p class="small"><strong>Expected:</strong></p>
+           <ul class="small">
+   <li><code>Cache-Control: public, max-age=120</code></li>
+    <li><code>Expires: [timestamp]</code></li>
+                    <li><code>X-Cached: Yes</code></li>
+  </ul>
+  </div>
+          <div class="card-footer">
+       <a asp-action="WithCaching" class="btn btn-danger btn-sm w-100">
+ <i class="bi bi-play"></i> Test
+       </a>
+   </div>
+            </div>
+ </div>
+
+              <!-- No Filter (Control) -->
+   <div class="col-md-4 mb-3">
+          <div class="card border-secondary h-100">
+     <div class="card-header bg-light">
+   <h6><i class="bi bi-x-circle-fill text-secondary"></i> No Filter (Control)</h6>
+         </div>
+        <div class="card-body">
+   <p class="small">
+             <span class="badge bg-secondary">No filters</span>
+         </p>
+   <p class="small text-muted">Standard response only</p>
+      <p class="small"><strong>Expected:</strong></p>
+   <ul class="small">
+      <li>No <code>X-*</code> headers</li>
+   <li>Standard headers only</li>
+     </ul>
+          </div>
+               <div class="card-footer">
+        <a asp-action="WithoutHeader" class="btn btn-secondary btn-sm w-100">
+                 <i class="bi bi-play"></i> Test
+         </a>
+       </div>
+  </div>
+         </div>
+
+   </div>
+        </div>
+            </div>
+
+      <!-- API Tests -->
+    <div class="card mt-4 shadow">
+    <div class="card-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+     <h4><i class="bi bi-code-square"></i> API Endpoint Tests</h4>
+   </div>
+        <div class="card-body">
+     <div class="row">
+             <div class="col-md-6">
+    <h6><i class="bi bi-filetype-json"></i> JSON Response with Headers</h6>
+           <p class="small text-muted">Returns JSON response with custom headers</p>
+            <a asp-action="ApiWithHeader" class="btn btn-outline-primary">
+              <i class="bi bi-braces"></i> Test JSON API
+     </a>
+      </div>
+      <div class="col-md-6">
+      <h6><i class="bi bi-list-ul"></i> Get Headers as JSON</h6>
+        <p class="small text-muted">Returns all custom headers in JSON format</p>
+      <a asp-action="GetHeadersJson" class="btn btn-outline-success">
+               <i class="bi bi-file-earmark-code"></i> Get Headers JSON
+            </a>
+       </div>
+       </div>
+       </div>
+            </div>
+
+          <!-- Command Line Examples -->
+      <div class="card mt-4 shadow">
+          <div class="card-header bg-dark text-white">
+          <h4><i class="bi bi-terminal-fill"></i> Command Line Testing</h4>
+    </div>
+           <div class="card-body">
+ <ul class="nav nav-tabs" role="tablist">
+             <li class="nav-item">
+    <a class="nav-link active" data-bs-toggle="tab" href="#powershell">
+           <i class="bi bi-window"></i> PowerShell
+    </a>
+          </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#curl">
+                <i class="bi bi-terminal"></i> cURL
+         </a>
+   </li>
+           </ul>
+     <div class="tab-content mt-3">
+  <div id="powershell" class="tab-pane fade show active">
+          <div class="bg-dark text-light p-3 rounded">
+          <code>
+# View headers<br>
+Invoke-WebRequest "@(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("ViewHeaders")" | Select-Object -ExpandProperty Headers<br>
+<br>
+# Filter custom headers only<br>
+$response = Invoke-WebRequest "@(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("ViewHeaders")"<br>
+$response.Headers.GetEnumerator() | Where-Object { $_.Key -like "X-*" }
+     </code>
+    </div>
+   <button class="btn btn-sm btn-outline-secondary mt-2" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">
+          <i class="bi bi-clipboard"></i> Copy
+      </button>
+  </div>
+  <div id="curl" class="tab-pane fade">
+       <div class="bg-dark text-light p-3 rounded">
+    <code>
+# Headers only<br>
+curl -I @(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("ViewHeaders")<br>
+<br>
+# Verbose output<br>
+curl -v @(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("ViewHeaders")<br>
+<br>
+# Filter custom headers<br>
+curl -I @(Context.Request.Scheme)://@(Context.Request.Host)@Url.Action("ViewHeaders") 2>&1 | grep "^X-"
+       </code>
+          </div>
+     <button class="btn btn-sm btn-outline-secondary mt-2" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">
+   <i class="bi bi-clipboard"></i> Copy
+  </button>
+</div>
+   </div>
+       </div>
+    </div>
+
+     <!-- Tips & Tricks -->
+ <div class="card mt-4 shadow">
+       <div class="card-header bg-warning">
+     <h4><i class="bi bi-lightbulb-fill"></i> Tips & Tricks</h4>
+       </div>
+         <div class="card-body">
+            <div class="row">
+           <div class="col-md-6">
+      <h6>✅ Best Practices</h6>
+    <ul class="small">
+        <li>Open Network tab BEFORE clicking test buttons</li>
+      <li>Enable "Preserve log" to keep request history</li>
+   <li>Use incognito mode to avoid cache issues</li>
+      <li>Check both Request and Response headers</li>
+            </ul>
+                 </div>
+     <div class="col-md-6">
+      <h6>🔍 What to Look For</h6>
+   <ul class="small">
+    <li>Headers starting with <code>X-</code> are custom</li>
+      <li><code>Cache-Control</code> indicates caching</li>
+                <li><code>X-Response-Time</code> shows timestamp</li>
+   <li>Compare with/without filters to see difference</li>
+       </ul>
+       </div>
+          </div>
+             </div>
+          </div>
+
+      <!-- Navigation -->
+ <div class="text-center mt-5 mb-5">
+   <a asp-controller="Home" asp-action="Index" class="btn btn-lg btn-secondary">
+          <i class="bi bi-house-fill"></i> Back to Home
+       </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+}
